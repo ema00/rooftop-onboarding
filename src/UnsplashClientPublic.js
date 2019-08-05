@@ -11,7 +11,7 @@ class UnsplashClientPublic {
         
     }
 
-    getRandomImage = (collections, featured, username, query, orientation, count) => {
+    getRandomImage = (featured, username, query, orientation, count) => {
         count = (count <= MAX_ITEMS) ? count : MAX_ITEMS;
     }
 
