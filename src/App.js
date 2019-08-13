@@ -15,6 +15,7 @@ import Button from './Button.js';
 import SearchItem from './SearchItem.js'
 
 
+// Replace this by your UNSPLASHED API key
 const KEY = "1e5e4f5e62f1ed42a7c7fb07218b1f91e3f31279e37324727bc4da2712f7555f";
 
 
@@ -51,6 +52,7 @@ class App extends React.Component {
           description={item.alt_description}
           user={item.user.first_name + " " + item.user.last_name}
           full={item.urls.full}
+          img={item.urls.thumb}
         />
     );
     this.setState({searchResults: itemList});

@@ -23,6 +23,27 @@
   height: 80px;
 }
 
+.Item-random-search-div {
+  background-color: #dce4f3;
+  display: flex;
+  flex-direction: row;
+  align-items: left;
+}
+
+.Image-container {
+  height: 120px;
+}
+
+img {
+  object-fit: cover;
+  height: 100%;
+}
+
+.Image-data-container {
+  text-align: left;
+  padding-left: 20px;
+}
+
 .App-link {
   color: #61dafb;
 }

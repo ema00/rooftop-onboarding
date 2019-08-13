@@ -11,9 +11,14 @@ class SearchItem extends React.PureComponent {
   render () {
     return (
       <div className="Item-random-search-div">
-        <p>Description: { this.props.description }</p>
-        <p>User: { this.props.user }</p>
-        <a href={ this.props.full }>Image link</a>
+        <div className="Image-container">
+          <img src={ this.props.img }/>
+        </div>
+        <div className="Image-data-container">
+          <p>Description: { this.props.description }</p>
+          <p>User: { this.props.user }</p>
+          <a href={ this.props.full }>Full size</a>
+        </div>
       </div>
     );
   }
