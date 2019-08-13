@@ -1,3 +1,11 @@
+/**
+ * This program uses React to query the Unsplashed API to query for photographs data.
+ * It is a simple example of the usage of async methods and API querying.
+ * The most relevant files are:
+ *    - UnsplashClientPublic.js'
+ *    - App.js
+ */
+
 import React from 'react';
 import './App.css';
 
