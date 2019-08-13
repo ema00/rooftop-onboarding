@@ -19,32 +19,23 @@ class App extends React.Component {
     this.client = new UnsplashClientPublic(KEY);
   }
 
-  componentDidMount = () => {
-    this.logRequests();
-  }
-
-  // this is just to test the UnsplashClientPublic class
-  // TODO: REMOVE THIS ONCE EVERYTHING IS WORKING
-  logRequests = async () => {
-    const data1 = await this.client.search("dog", 1, 10);
-    const data2 = await this.client.getRandomImage("dog", 10);
-    console.log(data1);
-    console.log(data2);
-  }
-
   handleSearchTermChange = (event) => {
     const value = event.target.value;
     this.setState({query: value});
   }
 
-  normalSearch = () => {
-    // TODO: IMPLEMENT NORMAL SEARCH
-    console.log("NORMAL SEARCH: " + this.state.query);
+  normalSearch = async () => {
+    // TODO: RENDER RESULT OF NORMAL SEARCH
+    console.log("NORMAL SEARCH:");
+    const data = await this.client.search(this.state.query, 1, 10);
+    console.log(data);
   }
 
-  randomSearch = () => {
-    // TODO: IMPLEMENT RANDOM SEARCH
-    console.log("RANDOM SEARCH: " + this.state.query);
+  randomSearch = async () => {
+    // TODO: RENDER RESULT OF RANDOM SEARCH
+    console.log("RANDOM SEARCH:");
+    const data = await this.client.getRandomImage(this.state.query, 10);
+    console.log(data);
   }
 
   render () {
