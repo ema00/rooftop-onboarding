@@ -13,7 +13,16 @@
   color: white;
 }
 
+.Search-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.Button {
+  height: 80px;
+}
+
 .App-link {
   color: #61dafb;
 }
-
