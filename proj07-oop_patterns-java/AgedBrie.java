@@ -4,8 +4,10 @@
 public class AgedBrie extends Item {
 
     public AgedBrie(String description, int sellIn, int quality) {
-        String desc = "Aged Brie" + description.equals("") ? "" : ", " + description;
-        super(desc, sellIn, quality);
+        String desc = "Aged Brie" + (description.equals("") ? "" : ", " + description);
+        this.description = desc;
+        this.sellIn = sellIn;
+        this.quality = quality;
     }
 
 

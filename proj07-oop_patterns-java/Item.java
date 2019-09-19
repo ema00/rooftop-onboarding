@@ -1,18 +1,20 @@
-package gilded_rose;
 
 
 
 public abstract class Item {
 
-    private static final MINIMUM_QUALITY = 0;
-    private static final MAXIMUM_QUALITY = 50;
+    protected static final int MINIMUM_QUALITY = 0;
+    protected static final int MAXIMUM_QUALITY = 50;
 
-    private final String description;
-    private int sellIn;
-    private int quality;
+    protected String description;
+    protected int sellIn;
+    protected int quality;
 
 
-    public Item(String description, int sellIn, int quality) {
+    protected Item() {
+    }
+
+    protected Item(String description, int sellIn, int quality) {
         this.description = description;
         this.sellIn = sellIn;
         this.quality = quality;
@@ -36,7 +38,7 @@ public abstract class Item {
 
     @Override
     public String toString() {
-        return this.name + ", " + this.sellIn + ", " + this.quality;
+        return this.description + ", " + this.sellIn + ", " + this.quality;
     }
 
 }

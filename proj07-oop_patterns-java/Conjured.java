@@ -4,8 +4,10 @@
 public class Conjured extends Item {
 
     public Conjured(String description, int sellIn, int quality) {
-        String desc = "Conjured" + description.equals("") ? "" : ", " + description;
-        super(desc, sellIn, quality);
+        String desc = "Conjured" + (description.equals("") ? "" : ", " + description);
+        this.description = desc;
+        this.sellIn = sellIn;
+        this.quality = quality;
     }
 
 

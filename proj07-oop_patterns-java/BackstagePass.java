@@ -3,18 +3,19 @@
 
 public class BackstagePass extends Item {
 
-    private static final QUALITY_DOUBLING_THRESHOLD_TO_SELL_IN = 10;
-    private static final QUALITY_TRIPLING_THRESHOLD_TO_SELL_IN = 5;
+    private static final int QUALITY_DOUBLING_THRESHOLD_TO_SELL_IN = 10;
+    private static final int QUALITY_TRIPLING_THRESHOLD_TO_SELL_IN = 5;
 
 
     public BackstagePass(String description, int sellIn, int quality) {
-        String desc = "BackstagePass" + " to " + description;
-        super(desc, sellIn, quality);
+        this.description = "BackstagePass" + " to " + description;
+        this.sellIn = sellIn;
+        this.quality = quality;
     }
 
     @Override
     public void update() {
-        else if (sellIn <= 0) {
+        if (sellIn <= 0) {
             quality = 0;
         }
         else if (0 < sellIn && sellIn <= QUALITY_TRIPLING_THRESHOLD_TO_SELL_IN) {
