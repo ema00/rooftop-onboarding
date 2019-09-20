@@ -1,4 +1,5 @@
-package gilded_rose_v1;
+package gilded_rose_v2;
+
 
 
 public abstract class Item {

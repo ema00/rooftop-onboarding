@@ -1,4 +1,4 @@
-package gilded_rose_v1;
+package gilded_rose_v2;
 
 import java.util.List;
 import java.util.LinkedList;
