@@ -16,7 +16,7 @@ public class BackstagePass extends Item {
     @Override
     public void update() {
         if (sellIn <= 0) {
-            quality = 0;
+            quality = MINIMUM_QUALITY;
         }
         else if (0 < sellIn && sellIn <= QUALITY_TRIPLING_THRESHOLD_TO_SELL_IN) {
             quality *= 3;

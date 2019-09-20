@@ -14,7 +14,7 @@ public class Conjured extends Item {
     @Override
     public void update() {
         if (quality == 1) {
-            quality = 0;
+            quality = MINIMUM_QUALITY;
         }
         else if (quality > 1) {
             quality -= 2;

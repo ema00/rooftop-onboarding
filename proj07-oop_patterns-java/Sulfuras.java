@@ -13,7 +13,7 @@ public class Sulfuras extends Item {
 
     @Override
     public void update() {
-        if (quality > 0) {
+        if (quality > MINIMUM_QUALITY) {
             quality -= 1;
         }
     }

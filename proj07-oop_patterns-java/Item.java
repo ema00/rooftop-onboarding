@@ -21,6 +21,18 @@ public abstract class Item {
     }
 
 
+    public String getDescription() {
+        return description;
+    }
+
+    public int getSellIn() {
+        return sellIn;
+    }
+
+    public int getQuality() {
+        return quality;
+    }
+
     public void update() {
         if (quality > 1) {
             if (sellIn > 0) {
@@ -31,7 +43,7 @@ public abstract class Item {
             }
         }
         else if (quality == 1) {
-            quality = 0;
+            quality = MINIMUM_QUALITY;
         }
         sellIn -= 1;
     }
