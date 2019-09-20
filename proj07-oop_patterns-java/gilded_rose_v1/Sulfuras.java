@@ -1,4 +1,4 @@
-
+package gilded_rose_v1;
 
 
 public class Sulfuras extends Item {

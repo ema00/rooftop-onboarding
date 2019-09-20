@@ -1,3 +1,5 @@
+package gilded_rose_v1;
+
 import java.util.List;
 import java.util.LinkedList;
 
