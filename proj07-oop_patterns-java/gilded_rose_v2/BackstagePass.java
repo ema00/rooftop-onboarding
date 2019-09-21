@@ -1,5 +1,8 @@
 package gilded_rose_v2;
 
+import java.time.LocalDate;
+import static java.time.temporal.ChronoUnit.DAYS;
+
 
 
 public class BackstagePass extends Item {
@@ -8,27 +11,39 @@ public class BackstagePass extends Item {
     private static final int QUALITY_TRIPLING_THRESHOLD_TO_SELL_IN = 5;
 
 
-    public BackstagePass(String description, int sellIn, int quality) {
-        this.description = "BackstagePass" + " to " + description;
-        this.sellIn = sellIn;
-        this.quality = quality;
+    public BackstagePass(String description, LocalDate stockDate, LocalDate dueDate, long quality) {
+        super(
+                "BackstagePass" + " to " + description,
+                stockDate,
+                dueDate,
+                quality
+        );
     }
 
     @Override
-    public void update() {
-        if (sellIn <= 0) {
-            quality = MINIMUM_QUALITY;
-        }
-        else if (0 < sellIn && sellIn <= QUALITY_TRIPLING_THRESHOLD_TO_SELL_IN) {
-            quality *= 3;
-        }
-        else if (sellIn <= QUALITY_DOUBLING_THRESHOLD_TO_SELL_IN) {
-            quality *= 2;
+    public void update(LocalDate date) {
+        long remaining = daysToDueDate(date);
+        long daysPassedFromStock = DAYS.between(stockDate, date);
+        long duration = DAYS.between(stockDate, dueDate);
+        this.quality = initialQuality;
+
+        if (remaining < 0) {
+            quality = 0;
         }
         else {
-            quality += 1;
+            long threshold2 = duration - QUALITY_DOUBLING_THRESHOLD_TO_SELL_IN;
+            long threshold3 = duration - QUALITY_TRIPLING_THRESHOLD_TO_SELL_IN;
+            for (long d = 1; d <= daysPassedFromStock; d++) {
+                if (d < threshold2 + 1) {
+                    quality += 1;
+                } else if (d < threshold3 + 1) {
+                    quality *= 2;
+                }
+                else {
+                    quality *= 3;
+                }
+            }
         }
-        sellIn -= 1;
     }
 
 }

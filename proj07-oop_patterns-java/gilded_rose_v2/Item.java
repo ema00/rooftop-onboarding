@@ -1,5 +1,8 @@
 package gilded_rose_v2;
 
+import java.time.LocalDate;
+import static java.time.temporal.ChronoUnit.DAYS;
+
 
 
 public abstract class Item {
@@ -7,51 +10,53 @@ public abstract class Item {
     protected static final int MINIMUM_QUALITY = 0;
     protected static final int MAXIMUM_QUALITY = 50;
 
-    protected String description;
-    protected int sellIn;
-    protected int quality;
+    protected final String description;
+    protected final LocalDate stockDate;
+    protected final LocalDate dueDate;
+    protected final long initialQuality;
+    protected long quality;
 
 
-    protected Item() {
-    }
-
-    protected Item(String description, int sellIn, int quality) {
+    protected Item(String description, LocalDate stockDate, LocalDate dueDate, long quality) {
         this.description = description;
-        this.sellIn = sellIn;
-        this.quality = quality;
+        this.stockDate = stockDate;
+        this.dueDate = dueDate;
+        this.initialQuality = quality;
     }
 
 
-    public String getDescription() {
+    public final String getDescription() {
         return description;
     }
 
-    public int getSellIn() {
-        return sellIn;
-    }
-
-    public int getQuality() {
+    public final long getQuality() {
         return quality;
     }
 
-    public void update() {
-        if (quality > 1) {
-            if (sellIn > 0) {
-                quality -= 1;
+    public final long daysToDueDate(LocalDate date) {
+        return DAYS.between(date, dueDate);
+    }
+
+    public void update(LocalDate date) {
+        long remaining = daysToDueDate(date);
+
+        if (remaining > 0) {
+            if (initialQuality < remaining) {
+                quality = MINIMUM_QUALITY;
+            } else {
+                quality -= remaining;
             }
-            else {
-                quality -= 2;
-            }
+        } else {
+            long daysUntilDueDate = DAYS.between(stockDate, dueDate);
+            long daysPassedDueDate = -remaining;
+            quality = initialQuality - daysUntilDueDate;
+            quality = (quality - 2 * daysPassedDueDate > 0 ? quality - 2 * daysPassedDueDate : 0);
         }
-        else if (quality == 1) {
-            quality = MINIMUM_QUALITY;
-        }
-        sellIn -= 1;
     }
 
     @Override
     public String toString() {
-        return this.description + ", " + this.sellIn + ", " + this.quality;
+        return this.description + ", " + daysToDueDate(LocalDate.now()) + ", " + this.quality;
     }
 
 }

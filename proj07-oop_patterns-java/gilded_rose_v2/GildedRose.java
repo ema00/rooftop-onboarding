@@ -1,5 +1,6 @@
 package gilded_rose_v2;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.LinkedList;
 
@@ -16,31 +17,33 @@ public class GildedRose {
 
     public static void main(String[] args) {
         List<Item> items = new LinkedList<>();
-        items.add(new AgedBrie("", 5, 2));
-        items.add(new BackstagePass("TAFKAL80ETC concert", 3, 2));
-        items.add(new Sulfuras("Hand of Ragnaros", 5, 3));
-        items.add(new Conjured("Bread", 5, 2));
+        items.add(new AgedBrie("", LocalDate.now(), LocalDate.now().plusDays(5), 2));
+        items.add(new BackstagePass("TAFKAL80ETC concert", LocalDate.now(), LocalDate.now().plusDays(13), 1));
+        items.add(new Sulfuras("Hand of Ragnaros", LocalDate.now(), LocalDate.now().plusDays(5), 3));
+        items.add(new Conjured("Bread", LocalDate.now(), LocalDate.now().plusDays(5), 8));
 
         GildedRose gr = new GildedRose(items);
 
-        for (int i = 1; i < 6; i++) {
+        for (int i = 1; i < 15; i++) {
+            LocalDate date = LocalDate.now().plusDays(i);
             System.out.println("------------------------- Day " + i + ":");
-            gr.updateQuality();
-            System.out.print(gr.toString());
+            gr.updateQuality(date);
+            System.out.print(gr.toString(date));
         }
     }
 
-    public void updateQuality() {
+    public void updateQuality(LocalDate date) {
         for (Item item : items) {
-            item.update();
+            item.update(date);
         }
     }
 
-    @Override
-    public String toString() {
+    public String toString(LocalDate date) {
         String result = "";
         for (Item item : items) {
-            result = result + item + "\n";
+            result = result
+                    + item.getDescription() + ", " + item.daysToDueDate(date)
+                    + ", " + item.getQuality() + "\n";
         }
         return result;
     }
