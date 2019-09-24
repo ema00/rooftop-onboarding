@@ -5,8 +5,8 @@
    "username": "user",
    "password": "secret",
    "database": "onboarding",
-   "synchronize": false,
-   "logging": false,
+   "synchronize": true,
+   "logging": true,
    "entities": [
       "orm/entity/**/*.ts"
    ],

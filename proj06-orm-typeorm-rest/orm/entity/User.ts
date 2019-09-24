@@ -1,8 +1,10 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, BaseEntity} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, OneToMany, BaseEntity} from "typeorm";
 import {Post} from "./Post";
+
 
 @Entity()
 export class User extends BaseEntity {
+
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -12,7 +14,7 @@ export class User extends BaseEntity {
     @Column()
     isActive: boolean;
 
-    @ManyToOne(type => Post)
+    @OneToMany(type => Post, post => post.craftedBy)
     posts: Post[];
 
 }
