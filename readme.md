@@ -8,15 +8,16 @@ Project 05: Javascript, advanced
 --------------------------------
 
 Encapsulate the functionality to make requests to a particular REST API using javascript.
-Making requests to the unsplashed API, for searching images and random images based on a text string.
-Made with an SPA using react to display the search results.
+Making requests to the unsplash API (https://unsplash.com/developers), for searching images and random images based on a text string.
+Made with an SPA using React (https://es.reactjs.org/ and https://en.reactjs.org/docs/create-a-new-react-app.html#create-react-app) to display the search results.
 
 
 Project 06: Databases and ORMs
 ------------------------------
 
 Expose a REST API that acesses a database through an ORM.
-The ORM is accessed using the Active Record apttern.
+The ORM is accessed using the Active Record pattern.
+Written in Typescript, uses TypeORM (https://typeorm.io/#/).
 
 
 Project 07: OOP and Patterns
