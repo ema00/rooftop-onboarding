@@ -1,24 +1,12 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, BaseEntity} from "typeorm";
 import { User } from "./User";
 import { Category } from "./Category";
 
+export class Post {
 
-@Entity()
-export class Post extends BaseEntity {
-
-    @PrimaryGeneratedColumn()
     id: number;
-
-    @Column()
     title: string;
-
-    @Column()
-    content: string ;
-
-    @ManyToOne(type => User, user => user.posts)
+    content: boolean;
     craftedBy: User;
-
-    @ManyToOne(type => Category)
     category: Category;
 
 }
