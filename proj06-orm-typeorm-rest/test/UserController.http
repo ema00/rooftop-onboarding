@@ -1,0 +1,66 @@
+// Tests for the User Controller
+
+### Users endpoint
+@domain = http://localhost:3000/
+@endpoint = users/
+@url = {{domain}}{{endpoint}}
+
+
+### Create User
+# @name createUser
+POST  {{url}} HTTP/1.1
+Content-Type: application/json
+
+{
+    "nickname": "pedro"
+}
+
+
+### Read last created User
+@userId = {{createUser.response.body.$.user.id}}
+GET {{url}} HTTP/1.1
+Content-Type: application/json
+
+{
+    "id": {{userId}}
+}
+
+
+### Search User by id
+@id = 3
+GET {{url}} HTTP/1.1
+Content-Type: application/json
+
+{
+    "id": {{id}}
+}
+
+
+### Search User by nickname
+@nickname = "jose"
+GET {{url}} HTTP/1.1
+Content-Type: application/json
+
+{
+    "nickname": {{nickname}}
+}
+
+
+### Search non-existent User
+@nicknameNotInDB = "miguel"
+GET {{url}} HTTP/1.1
+Content-Type: application/json
+
+{
+    "nickname": {{nicknameNotInDB}}
+}
+
+
+### Search User, wrong parameters
+GET {{url}} HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": {{nickname}}
+}
+
