@@ -25,9 +25,9 @@ Snippets for testing the HTTP endpoints are written for use with Visual Studio C
 Just in case, and since these were not defined in the specification. The parameters for querying the HTTP endpoints are passed as JSON in the body of the requests. Description is given for each controller in the "test" folder.
 
 The status codes of the responses are:
-200: The request is well composed and the resource was found.
-404: The request is well composed but the resource was not found.
-400: The request is not well composed, invalid parameters.
+- 200: The request is well composed and the resource was found.
+- 404: The request is well composed but the resource was not found.
+- 400: The request is not well composed, invalid parameters.
 
 
 Project 07: OOP and Patterns
