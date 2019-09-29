@@ -2,55 +2,58 @@ import { Post } from '../../orm/entity/Post';
 import { User } from '../../orm/entity/User';
 import { Category } from '../../orm/entity/Category';
 
+
 export const createPost = async (req, res) => {
-
-    // Get the Post data
-
-    const {title, content, userId, category_name} = req.body;
-
-    // Create the Post
+    const {title, content, categoryName, userId} = req.body;
 
     const post = new Post();
     post.title = title;
     post.content = content;
 
-    // Get the User and Category entity,
-
-    const user = await User.findOne({id: userId});
-    
-    if (user) { // Validar si existe el usuario!
-      post.craftedBy = user;
+    const user = await User.findOne({ id: userId });
+    if (user.id == userId) {
+        post.craftedBy = user;
+        res.status(201);
     }
     else {
-      res.status(404);
+        res.status(404);
     }
 
-    // const category = await Category({name: category});
-    // Si no existe la categoria crearla
-    // post.category = category;
-    let category = await Category.findOne({name: category_name});
-
+    let category = await Category.findOne({ name: categoryName });
     if (category) {
-      post.category = category;
+        post.category = category;
     }
     else {
-      category = new Category();
-      category.name = category_name;
-      category.save();
-      post.category = category; 
+        category = new Category();
+        category.name = categoryName;
+        await category.save();
+        post.category = category; 
     }
 
-    // await post.save();
-
-    // Respond
-
-    res.json({ post: Post, message: "The post was created succesfully" });
-
+    await post.save();
+    res.json({post: post});
 }
 
-export const listPosts = async (req, res) => {
 
-  //const posts = Post.find();
+export const searchPostsForUser = async (req, res) => {
+    const id = req.body.id;
+    const categoryName = req.body.categoryName;
 
-  res.json({posts: "posts"});
+    let posts = [];
+    let user = (await User.find({ where: { id: id } }))[0];
+
+    if (user) {
+        if (categoryName) {
+            let category = await Category.findOne({ where: { name: categoryName } });
+            posts = await Post.find({ where: { user: user, category: category } });
+        }
+        else {
+            posts = await Post.find({ where: { user: user } });
+        }
+        res.status(200);
+    }
+    else {
+        res.status(404);
+    }
+    res.json(posts);
 }
