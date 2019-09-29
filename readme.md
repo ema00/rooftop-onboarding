@@ -17,9 +17,13 @@ Project 06: Databases and ORMs
 
 Expose a REST API that acesses a database through an ORM.
 The ORM is accessed using the Active Record pattern.
+
 Written in Typescript, uses TypeORM (https://typeorm.io/#/).
+
 Snippets for testing the HTTP endpoints are written for use with Visual Studio Code REST Client (https://github.com/Huachao/vscode-restclient).
+
 Just in case, and since these were not defined in the specification. The parameters for querying the HTTP endpoints are passed as JSON in the body of the requests. Description is given for each controller in the "test" folder.
+
 The status codes of the responses are:
 200: The request is well composed and the resource was found.
 404: The request is well composed but the resource was not found.
