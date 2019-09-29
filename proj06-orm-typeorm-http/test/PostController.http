@@ -62,3 +62,21 @@ Content-Type: application/json
 {
     "id": {{nonExistentUserId}}
 }
+
+
+### Search Posts by Category; no User specified, so any User
+GET {{url}} HTTP/1.1
+Content-Type: application/json
+
+{
+    "categoryName": {{searchCategoryName}}
+}
+
+
+### Search Posts by Category, but non-existent Category
+GET {{url}} HTTP/1.1
+Content-Type: application/json
+
+{
+    "categoryName": {{nonExistentCategory}}
+}

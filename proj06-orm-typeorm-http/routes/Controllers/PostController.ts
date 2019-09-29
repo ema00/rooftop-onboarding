@@ -52,6 +52,11 @@ export const searchPostsForUser = async (req, res) => {
         }
         res.status(200);
     }
+    else if (categoryName) {
+        let category = await Category.findOne({ where: { name: categoryName } });
+        posts = await Post.find({ where: { category: category } });
+        category ? res.status(200) : res.status(404);
+    }
     else {
         res.status(404);
     }
