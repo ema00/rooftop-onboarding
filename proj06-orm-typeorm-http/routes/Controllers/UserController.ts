@@ -17,19 +17,6 @@ export const createUser = async (req, res) => {
 }
 
 
-export const readUser = async (req, res) => {
-    const id = req.body.id;
-
-    try {
-        const user = await User.findOne(id);
-        res.status(200).json({ user: user });
-    }
-    catch {
-        res.status(500, "DB Error.");
-    }
-}
-
-
 export const searchUser = async (req, res) => {
     let search = null;
 
@@ -45,7 +32,12 @@ export const searchUser = async (req, res) => {
 
     try {
         const user = await User.findOne({ where: search });
-        res.status(200).json([user]);
+        if (user) {
+            res.status(200).json([user]);
+        }
+        else {
+            res.status(404).json([]);
+        }
     }
     catch {
         res.status(500, "DB Error");
