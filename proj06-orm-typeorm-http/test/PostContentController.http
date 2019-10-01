@@ -1,0 +1,27 @@
+// Tests for the Post Content Controller
+
+### Post Content endpoint
+@domain = http://localhost:3000/
+@endpoint = content/
+@url = {{domain}}{{endpoint}}
+
+
+### Search the Posts that contain the given content
+@postContent = "another"
+GET {{url}} HTTP/1.1
+Content-Type: application/json
+
+{
+    "content": {{postContent}}
+}
+
+
+### Search the Posts that contain the given content, but content not exists
+@postContentNotExists = "nothing"
+GET {{url}} HTTP/1.1
+Content-Type: application/json
+
+{
+    "content": {{postContentNotExists}}
+}
+

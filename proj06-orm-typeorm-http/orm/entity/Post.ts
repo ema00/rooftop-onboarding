@@ -13,7 +13,7 @@ export class Post extends BaseEntity {
     title: string;
 
     @Column()
-    content: string ;
+    content: string;
 
     @ManyToOne(type => User, user => user.posts)
     craftedBy: User;
