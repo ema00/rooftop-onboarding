@@ -7,6 +7,7 @@
 
 
 ### Create Post
+### Return Status 201
 # @name createPost
 @title = "Title of the new, new, new post"
 @content = "Content of another the new post. Bla, bla, blaaaaa."
@@ -24,6 +25,7 @@ Content-Type: application/json
 
 
 ### Search the Posts of a User by Category
+### Return Status 200
 @searchCategoryName = "Silly post, v2"
 GET {{url}} HTTP/1.1
 Content-Type: application/json
@@ -35,6 +37,7 @@ Content-Type: application/json
 
 
 ### Search the Posts of a User by Category, but Category not exists
+### Return Status 200
 @nonExistentCategory = "A non-existent category"
 GET {{url}} HTTP/1.1
 Content-Type: application/json
@@ -46,6 +49,7 @@ Content-Type: application/json
 
 
 ### Search the Posts of a User, Category not specified, so any Category
+### Return Status 200
 GET {{url}} HTTP/1.1
 Content-Type: application/json
 
@@ -55,6 +59,7 @@ Content-Type: application/json
 
 
 ### Search the Posts of a User, User does not exist
+### Return Status 404
 @nonExistentUserId = -10
 GET {{url}} HTTP/1.1
 Content-Type: application/json
@@ -65,6 +70,7 @@ Content-Type: application/json
 
 
 ### Search Posts by Category; no User specified, so any User
+### Return Status 200
 GET {{url}} HTTP/1.1
 Content-Type: application/json
 
@@ -74,6 +80,7 @@ Content-Type: application/json
 
 
 ### Search Posts by Category, but non-existent Category
+### Return Status 404
 GET {{url}} HTTP/1.1
 Content-Type: application/json
 
