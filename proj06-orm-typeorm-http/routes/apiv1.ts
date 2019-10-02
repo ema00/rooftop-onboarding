@@ -1,7 +1,8 @@
 import { Router } from 'express'
-import { createPost, searchPosts } from './Controllers/PostController';
-import { createUser } from './Controllers/UserController';
-import { searchUser } from './Controllers/UserController';
+import { createPost } from './Controllers/PostCreateController';
+import { searchPosts } from './Controllers/PostSearchController';
+import { createUser } from './Controllers/UserCreateController';
+import { searchUser } from './Controllers/UserSearchController';
 import { searchPostContent } from './Controllers/PostContentController';
 
 

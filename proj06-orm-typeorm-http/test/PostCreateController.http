@@ -1,0 +1,25 @@
+// Tests for the Post Create Controller
+
+### Posts endpoint
+@domain = http://localhost:3000/
+@endpoint = posts/
+@url = {{domain}}{{endpoint}}
+
+
+### Create Post
+### Return Status 201
+# @name createPost
+@title = "Title of the latest post"
+@content = "Content of the latest post. Bla, bla, bla, blaaaaa."
+@categoryName = "Post, v7"
+@userId = 2
+POST  {{url}} HTTP/1.1
+Content-Type: application/json
+
+{
+    "title": {{title}},
+    "content": {{content}},
+    "categoryName": {{categoryName}},
+    "userId": {{userId}}
+}
+

@@ -1,0 +1,29 @@
+// Tests for the User Create Controller
+
+### Users endpoint
+@domain = http://localhost:3000/
+@endpoint = users/
+@url = {{domain}}{{endpoint}}
+
+
+### Create User
+### Return Status 201
+# @name createUser
+POST  {{url}} HTTP/1.1
+Content-Type: application/json
+
+{
+    "nickname": "andy"
+}
+
+
+### Read last created User
+### Return Status 200
+@userId = {{createUser.response.body.$.user.id}}
+GET {{url}} HTTP/1.1
+Content-Type: application/json
+
+{
+    "id": {{userId}}
+}
+

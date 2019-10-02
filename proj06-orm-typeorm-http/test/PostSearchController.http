@@ -1,4 +1,4 @@
-// Tests for the Post Controller
+// Tests for the Post Search Controller
 
 ### Posts endpoint
 @domain = http://localhost:3000/
@@ -6,26 +6,9 @@
 @url = {{domain}}{{endpoint}}
 
 
-### Create Post
-### Return Status 201
-# @name createPost
-@title = "Title of the new, new, new post"
-@content = "Content of another the new post. Bla, bla, blaaaaa."
-@categoryName = "Post, v6"
-@userId = 2
-POST  {{url}} HTTP/1.1
-Content-Type: application/json
-
-{
-    "title": {{title}},
-    "content": {{content}},
-    "categoryName": {{categoryName}},
-    "userId": {{userId}}
-}
-
-
 ### Search the Posts of a User by Category
 ### Return Status 200
+@userId = 2
 @searchCategoryName = "Silly post, v2"
 GET {{url}} HTTP/1.1
 Content-Type: application/json
