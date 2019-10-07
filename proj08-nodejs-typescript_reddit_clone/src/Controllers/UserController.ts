@@ -4,11 +4,10 @@ import User from "../Entity/User";
 
 export class UserController {
 
-    public static store(req: Request, res: Response) {
-        const user = new User();
-
+    public static save(req: Request, res: Response) {
         const { name, dni } = req.body;
 
+        const user = new User();
         user.name = name;
         user.dni = dni;
 
@@ -21,7 +20,7 @@ export class UserController {
         res.status(200).json({ user });
     }
 
-    public static async show(req: Request, res: Response) {
+    public static async read(req: Request, res: Response) {
         const { id } = req.params;
         const user = await User.findOne(id);
         res.status(200).json({ user });

@@ -1,4 +1,4 @@
-import express, { Request, Response, Express } from "express";
+import { Request, Response, Express } from "express";
 import bodyParser = require("body-parser");
 import { UserController } from "../Controllers/UserController";
 
@@ -7,22 +7,24 @@ class Router {
 
     private express: Express;
 
+
     constructor(express: Express) {
         this.express = express;
     }
 
-    public up() {
-        this.userRouts()
+
+    public init() {
+        this.setUserRoutes();
     }
 
-    private userRouts() {
+    private setUserRoutes() {
         this.express.use(bodyParser());
         this.express.get('/', function(req: Request,res: Response) {
-            
         })
-        this.express.post('/user', UserController.store);
-        this.express.get('/user/:id', UserController.show);
+        this.express.post('/users', UserController.save);
+        this.express.get('/users/:id', UserController.read);
     }
+
 }
 
 export default Router;

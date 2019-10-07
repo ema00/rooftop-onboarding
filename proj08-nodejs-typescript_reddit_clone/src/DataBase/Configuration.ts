@@ -1,4 +1,4 @@
-import {createConnection} from "typeorm";
+import { createConnection } from "typeorm";
 import User from '../Entity/User';
 
 
@@ -15,4 +15,5 @@ export async function createConnectionDB(){
         logging: true,
         entities: [User]
     });
+
 };
