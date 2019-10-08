@@ -15,11 +15,16 @@ public class GildedRose {
 
 
     public static void main(String[] args) {
+        AgedBrieFactory agedBrieFactory = new AgedBrieFactory();
+        BackstagePassFactory backstagePassFactory = new BackstagePassFactory();
+        SulfurasFactory sulfurasFactory = new SulfurasFactory();
+        ConjuredFactory conjuredFactory = new ConjuredFactory();
+
         List<Item> items = new LinkedList<>();
-        items.add(new AgedBrie("", 5, 2));
-        items.add(new BackstagePass("TAFKAL80ETC concert", 3, 2));
-        items.add(new Sulfuras("Hand of Ragnaros", 5, 3));
-        items.add(new Conjured("Bread", 5, 2));
+        items.add(agedBrieFactory.createItem("", 5, 2));
+        items.add(backstagePassFactory.createItem("TAFKAL80ETC concert", 3, 2));
+        items.add(sulfurasFactory.createItem("Hand of Ragnaros", 5, 3));
+        items.add(conjuredFactory.createItem("Bread", 5, 2));
 
         GildedRose gr = new GildedRose(items);
 
