@@ -2,7 +2,7 @@ import { createConnection } from "typeorm";
 import User from '../Entities/User';
 
 
-export async function createConnectionDB(){
+export async function createConnectionDB() {
     
     await createConnection({
         type: "mysql",

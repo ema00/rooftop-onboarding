@@ -1,8 +1,8 @@
 import express, { Express } from "express";
 import Router from "./Router/Router";
 import "reflect-metadata";
-import { createConnectionDB } from "./DataBase/Configuration";
 import * as dotenv from "dotenv";
+import { createConnectionDB } from "./Database/Configuration";
 
 
 class App {
