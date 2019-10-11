@@ -4,18 +4,48 @@ import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from "typeorm";
 @Entity()
 class User extends BaseEntity {
 
+
     @PrimaryGeneratedColumn()
-    public id: number;
+    private id: number;
 
     @Column()
-    public pass: string;
+    private pass: string;
 
     @Column()
-    public name: string;
+    private name: string;
 
     @Column()
-    public dni: number;
+    private dni: number;
     
+
+    public getId() {
+        return this.id;
+    }
+
+    public getPass() {
+        return this.pass;
+    }
+
+    public setPass(id: number) {
+        this.id = id;
+    }
+
+    public getName() {
+        return this.name;
+    }
+
+    public setName(id: number) {
+        this.id = id;
+    }
+
+    public getDni() {
+        return this.dni;
+    }
+
+    public setDni(id: number) {
+        this.id = id;
+    }
+
 }
 
 export default User;
