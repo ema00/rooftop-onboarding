@@ -8,7 +8,7 @@ class User extends BaseEntity {
     public id: number;
 
     @Column()
-    public pass: number;
+    public pass: string;
 
     @Column()
     public name: string;

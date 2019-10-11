@@ -1,18 +1,21 @@
 import { Request, Response } from "express";
-import User from "../Entity/User";
+import User from "../Entities/User";
 
 
 export class UserController {
 
-    public static save(req: Request, res: Response) {
-        const { name, dni } = req.body;
+    public static async save(req: Request, res: Response) {
+        const hash = require("object-hash");
 
+        const { name, dni, password } = req.body;
+        
         const user = new User();
         user.name = name;
         user.dni = dni;
+        user.pass = hash(password, {algorithm: 'sha3-512', encoding: 'base64'});
 
         try{
-            user.save();
+            await user.save();
         } catch (error) {
             res.status(500).json(error);
         }
