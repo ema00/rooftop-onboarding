@@ -10,9 +10,9 @@ export class UserController {
         const { name, dni, password } = req.body;
         
         const user = new User();
-        user.name = name;
-        user.dni = dni;
-        user.pass = hash(password, {algorithm: 'sha3-512', encoding: 'base64'});
+        user.setName(name);
+        user.setDni(dni);
+        user.setPass(hash(password, {algorithm: 'sha3-512', encoding: 'base64'}));
 
         try{
             await user.save();

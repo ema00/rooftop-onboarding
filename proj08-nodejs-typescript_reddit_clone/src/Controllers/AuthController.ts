@@ -6,7 +6,7 @@ import User from "../Entities/User"
 const TOKEN_LENGTH = 48;
 
 
-export class LoginController {
+export class AuthController {
 
     public static async getToken(req: Request, res: Response) {
         const hash = require("object-hash");
@@ -16,7 +16,7 @@ export class LoginController {
         try {
             const user = await User.findOne({ where: {name: name} });
             const pass: string = hash(password, {algorithm: 'sha3-512', encoding: 'base64'});
-            if (user && user.pass == pass) {
+            if (user && user.getPass() == pass) {
                 const distribution = string();
                 const accessToken = distribution(nodeCrypto, TOKEN_LENGTH);
                 res.status(200).json({Token: accessToken});
