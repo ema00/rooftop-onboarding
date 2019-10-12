@@ -4,7 +4,6 @@ import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from "typeorm";
 @Entity()
 class User extends BaseEntity {
 
-
     @PrimaryGeneratedColumn()
     private id: number;
 
@@ -26,24 +25,24 @@ class User extends BaseEntity {
         return this.pass;
     }
 
-    public setPass(id: number) {
-        this.id = id;
+    public setPass(pass: string) {
+        this.pass = pass;
     }
 
     public getName() {
         return this.name;
     }
 
-    public setName(id: number) {
-        this.id = id;
+    public setName(name: string) {
+        this.name = name;
     }
 
     public getDni() {
         return this.dni;
     }
 
-    public setDni(id: number) {
-        this.id = id;
+    public setDni(dni: number) {
+        this.dni = dni;
     }
 
 }

@@ -12,7 +12,7 @@ export class UserController {
         const user = new User();
         user.setName(name);
         user.setDni(dni);
-        user.setPass(hash(password, {algorithm: 'sha3-512', encoding: 'base64'}));
+        user.setPass(hash(password, { algorithm: 'sha3-512', encoding: 'base64' }));
 
         try{
             await user.save();
@@ -20,7 +20,7 @@ export class UserController {
             res.status(500).json(error);
         }
         
-        res.status(200).json({ user });
+        res.status(201).json({ user });
     }
 
     public static async read(req: Request, res: Response) {

@@ -1,0 +1,45 @@
+// Tests for the User Controller
+
+### Users endpoint
+@domain = http://localhost:3000/
+@endpoint = users/
+@url = {{domain}}{{endpoint}}
+
+
+### Create User
+### Return Status 201
+# @name createUser
+POST  {{url}} HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+
+{
+    "name": "judas",
+    "dni": "25666666",
+    "password": "j"
+}
+
+
+### Read last created User
+### Return Status 200
+@userId = {{createUser.response.body.$.user.id}}
+GET {{url}}{{userId}} HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+
+
+### Read a non-existent User
+### Return Status 200
+@userIdNonExistent = -10
+GET {{url}}{{userIdNonExistent}} HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+
+
+### Read a User, wrong parameters
+### Return Status 200
+@userIdWrongValue = juan
+GET {{url}}{{userIdWrongValue}} HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+

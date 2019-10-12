@@ -15,7 +15,7 @@ export class AuthController {
 
         try {
             const user = await User.findOne({ where: {name: name} });
-            const pass: string = hash(password, {algorithm: 'sha3-512', encoding: 'base64'});
+            const pass: string = hash(password, { algorithm: 'sha3-512', encoding: 'base64' });
             if (user && user.getPass() == pass) {
                 const distribution = string();
                 const accessToken = distribution(nodeCrypto, TOKEN_LENGTH);
