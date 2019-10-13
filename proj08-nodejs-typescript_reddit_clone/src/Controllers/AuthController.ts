@@ -14,19 +14,20 @@ export class AuthController {
         const { name, password } = req.body;
 
         try {
-            const user = await User.findOne({ where: {  name: name} });
+            const user = await User.findOne({ where: { name: name } })
             const pass: string = hash(password, { algorithm: 'sha3-512', encoding: 'base64' });
-            if (user && user.getPass() == pass) {
+
+            if (user && user.getPass().valueOf() == pass.valueOf()) {
                 const distribution = string();
                 const accessToken = distribution(nodeCrypto, TOKEN_LENGTH);
                 res.status(200).json({ Token: accessToken });
             }
             else {
-                res.status(400);
+                res.status(400).json({});
             }
         }
         catch {
-            res.status(500);
+            res.status(500).json({});;
         }
 
     }

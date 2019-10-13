@@ -1,0 +1,47 @@
+// Tests for the Authorization Controller
+
+### Authorization endpoint
+@domain = http://localhost:3000/
+@endpoint = authorize/
+@url = {{domain}}{{endpoint}}
+
+
+### Request Token for an existing User, right password
+### Return Status 201
+@userName = "judas"
+@userPassword = "j"
+POST {{url}} HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+
+{
+    "name": {{userName}},
+    "password": {{userPassword}}
+}
+
+
+### Request Token for a non-existent User
+### Return Status 400
+@userNameNonExistent = "juancho"
+POST {{url}} HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+
+{
+    "name": {{userNameNonExistent}},
+    "password": {{userPassword}}
+}
+
+
+### Request Token for an existent User, but wrong password
+### Return Status 400
+@passwordWrong = "judasPass"
+POST {{url}} HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+
+{
+    "name": {{userName}},
+    "password": {{passwordWrong}}
+}
+
