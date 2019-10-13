@@ -7,11 +7,11 @@ class User extends BaseEntity {
     @PrimaryGeneratedColumn()
     private id: number;
 
-    @Column()
-    private pass: string;
+    @Column({ unique: true })
+    private name: string;
 
     @Column()
-    private name: string;
+    private pass: string;
 
     @Column()
     private dni: number;

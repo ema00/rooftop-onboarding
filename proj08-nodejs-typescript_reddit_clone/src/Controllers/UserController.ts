@@ -16,11 +16,10 @@ export class UserController {
 
         try {
             await user.save();
+            res.status(201).json({ user });
         } catch (error) {
             res.status(500).json(error);
         }
-        
-        res.status(201).json({ user });
     }
 
     public static async read(req: Request, res: Response) {
