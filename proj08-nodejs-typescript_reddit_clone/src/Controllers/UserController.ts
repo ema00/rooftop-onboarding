@@ -14,7 +14,7 @@ export class UserController {
         user.setDni(dni);
         user.setPass(hash(password, { algorithm: 'sha3-512', encoding: 'base64' }));
 
-        try{
+        try {
             await user.save();
         } catch (error) {
             res.status(500).json(error);

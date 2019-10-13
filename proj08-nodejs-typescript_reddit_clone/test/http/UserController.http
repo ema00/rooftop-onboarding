@@ -24,7 +24,6 @@ Accept: application/json
 ### Return Status 200
 @userId = {{createUser.response.body.$.user.id}}
 GET {{url}}{{userId}} HTTP/1.1
-Content-Type: application/json
 Accept: application/json
 
 
@@ -32,7 +31,6 @@ Accept: application/json
 ### Return Status 200
 @userIdNonExistent = -10
 GET {{url}}{{userIdNonExistent}} HTTP/1.1
-Content-Type: application/json
 Accept: application/json
 
 
@@ -40,6 +38,5 @@ Accept: application/json
 ### Return Status 200
 @userIdWrongValue = juan
 GET {{url}}{{userIdWrongValue}} HTTP/1.1
-Content-Type: application/json
 Accept: application/json
 
