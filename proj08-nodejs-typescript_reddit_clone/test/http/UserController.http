@@ -6,7 +6,7 @@
 @url = {{domain}}{{endpoint}}
 
 
-### Create User
+### Create User, default values for Role and email
 ### Return Status 201
 # @name createUser
 POST  {{url}} HTTP/1.1
