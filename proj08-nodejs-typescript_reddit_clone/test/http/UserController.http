@@ -27,6 +27,13 @@ GET {{url}}{{userId}} HTTP/1.1
 Accept: application/json
 
 
+### Read an existing User
+### Return Status 200
+@id = 23000115
+GET {{url}}{{id}} HTTP/1.1
+Accept: application/json
+
+
 ### Read a non-existent User
 ### Return Status 200
 @userIdNonExistent = -10

@@ -16,6 +16,7 @@ export class UserController {
 
         try {
             await user.save();
+            user.setPass("");
             res.status(201).json({ user });
         } catch (error) {
             res.status(500).json(error);
@@ -25,6 +26,7 @@ export class UserController {
     public static async read(req: Request, res: Response) {
         const { id } = req.params;
         const user = await User.findOne(id);
+        if (user) { user.setPass(""); }
         res.status(200).json({ user });
     }
 
