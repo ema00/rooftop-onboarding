@@ -1,4 +1,5 @@
 import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { JoinTable, ManyToMany } from "typeorm";
 import UserRole from "./UserRole"
 
 
@@ -14,8 +15,9 @@ class User extends BaseEntity {
     @Column({ nullable: false })
     private pass: string;
 
-    @Column({ type: "enum", enum: UserRole, default: UserRole.GUEST, nullable: false })
-    private role: UserRole;
+    @ManyToMany(type => UserRole, role => role.getUsers)
+    @JoinTable()
+    private roles: UserRole[];
 
     @Column()
     private dni: number;
@@ -47,12 +49,12 @@ class User extends BaseEntity {
         this.name = name;
     }
 
-    public getRole(): UserRole {
-        return this.role;
+    public getRoles(): UserRole[] {
+        return this.roles;
     }
 
-    public setRole(role: UserRole) {
-        this.role = role;
+    public setRoles(roles: UserRole[]) {
+        this.roles = roles;
     }
 
     public getDni(): number {
