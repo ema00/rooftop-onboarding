@@ -20,7 +20,7 @@ export class AuthController {
             if (user && user.getPass().valueOf() == pass.valueOf()) {
                 const distribution = string();
                 const accessToken = distribution(nodeCrypto, TOKEN_LENGTH);
-                res.status(200).json({ Token: accessToken });
+                res.status(200).json({ token: accessToken, id: user.getId() });
             }
             else {
                 res.status(400).json({});
