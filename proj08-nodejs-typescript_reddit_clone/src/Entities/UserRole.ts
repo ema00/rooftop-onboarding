@@ -1,8 +1,7 @@
-import { Entity, BaseEntity, Column, ManyToMany } from "typeorm";
-import User from "../Entities/User";
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from "typeorm";
 
 
-enum Role {
+enum UserRoleType {
     ADMIN = "admin",
     ZEEPER = "zeeper",
     GUEST = "guest",
@@ -11,29 +10,17 @@ enum Role {
 
 @Entity()
 class UserRole extends BaseEntity {
+
+    @PrimaryGeneratedColumn()
+    public readonly id: number;
     
-    @Column({ type: "enum", enum: Role, default: Role.GUEST, nullable: false })
-    private role: Role;
-
-    @ManyToMany(type => User, user => user.getRoles)
-    private users: User[];
+    private _type: UserRoleType;
 
 
-    public getRole(): Role {
-        return this.role;
-    }
-
-    public setRole(role: Role) {
-        this.role = role;
-    }
-
-    public getUsers(): User[] {
-        return this.users;
-    }
-
-    public setUsers(users: User[]) {
-        this.users = users;
-    }
+    @Column({ type: "enum", enum: UserRoleType, default: UserRoleType.GUEST,
+        unique: true, nullable: false })
+    public get type(): UserRoleType { return this._type; }
+    public set type(value: UserRoleType) { this._type = value; }
 
 }
 

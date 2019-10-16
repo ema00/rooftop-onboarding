@@ -6,79 +6,64 @@ import UserRole from "./UserRole"
 @Entity()
 class User extends BaseEntity {
 
-    @PrimaryGeneratedColumn()
-    private id: number;
+    private _id: number;
 
-    @Column({ unique: true, nullable: false })
-    private name: string;
+    private _name: string;
 
-    @Column({ nullable: false })
-    private pass: string;
+    private _pass: string;
 
-    @ManyToMany(type => UserRole, role => role.getUsers)
-    @JoinTable()
-    private roles: UserRole[];
+    private _roles: UserRole[];
 
-    @Column()
-    private dni: number;
+    private _dni: number;
 
-    @Column({ default: false, nullable: false })
-    private blocked: boolean;
+    private _blocked: boolean;
 
-    @Column({ default: "", nullable: false })
-    private email: string;
+    private _email: string;
     
 
-    public getId(): number {
-        return this.id;
+    @PrimaryGeneratedColumn()
+    public get id(): number { return this._id; }
+    public set id(value: number) { this._id = value; }
+
+    @Column({ nullable: false })
+    public get pass(): string { return this._pass; }
+    public set pass(value: string) { this._pass = value; }
+
+    @Column({ unique: true, nullable: false })
+    public get name(): string { return this._name; }
+    public set name(value: string) { this._name = value; }
+
+    @ManyToMany(type => UserRole)
+    @JoinTable()
+    public get roles(): UserRole[] { return this._roles; }
+    public set roles(value: UserRole[]) { this._roles = value; }
+
+    @Column()
+    public get dni(): number { return this._dni; }
+    public set dni(value: number) { this._dni = value; }
+
+    @Column({ default: false, nullable: false })
+    public get blocked(): boolean { return this._blocked; }
+    public set blocked(value: boolean) { this._blocked = value; }
+
+    @Column({ default: "", nullable: false })
+    public get email(): string { return this._email; }
+    public set email(value: string) { this._email = value; }
+
+    public hasRole(role: UserRole): boolean {
+        return !!(this.roles.find((r: UserRole) => r.type === role.type));
     }
 
-    public getPass(): string {
-        return this.pass;
+    public addRole(role: UserRole) {
+        if (!this.hasRole(role)) {
+            this.roles.push(role);
+        }
     }
 
-    public setPass(pass: string) {
-        this.pass = pass;
-    }
-
-    public getName(): string {
-        return this.name;
-    }
-
-    public setName(name: string) {
-        this.name = name;
-    }
-
-    public getRoles(): UserRole[] {
-        return this.roles;
-    }
-
-    public setRoles(roles: UserRole[]) {
-        this.roles = roles;
-    }
-
-    public getDni(): number {
-        return this.dni;
-    }
-
-    public setDni(dni: number) {
-        this.dni = dni;
-    }
-
-    public isBlocked(): boolean {
-        return this.blocked;
-    }
-
-    public setBlocked(blocked: boolean) {
-        this.blocked = blocked;
-    }
-
-    public getEmail(): string {
-        return this.email;
-    }
-
-    public setEmail(email: string) {
-        this.email = email;
+    public removeRole(role: UserRole) {
+        if (this.hasRole(role)) {
+            this.roles = this.roles.filter((u: UserRole) => u.type !== role.type);
+        }
     }
 
 }
