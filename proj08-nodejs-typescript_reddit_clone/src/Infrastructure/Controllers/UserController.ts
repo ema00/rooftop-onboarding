@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import User from "../Entities/User";
 import ValidatorCreateUser from "../Validators/ValidatorCreateUser";
+import User from "../../Domain/Entities/User";
 
 
 export class UserController {

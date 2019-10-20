@@ -1,4 +1,4 @@
-import { Request, Response, Express } from "express";
+import { Express } from "express";
 import bodyParser = require("body-parser");
 import { UserController } from "../Controllers/UserController";
 import { AuthController } from "../Controllers/AuthController";

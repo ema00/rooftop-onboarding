@@ -1,8 +1,8 @@
 import express, { Express } from "express";
-import Router from "./Router/Router";
+import Router from "./Infrastructure/Router/Router";
 import "reflect-metadata";
 import * as dotenv from "dotenv";
-import { createConnectionDB } from "./Database/Configuration";
+import { createConnectionDB } from "./Infrastructure/Database/Configuration";
 
 
 class App {
@@ -27,7 +27,7 @@ class App {
     private startServer() {
         const port = 3000;
         this.app.listen(port, function() {
-            console.log("Server is run in port 3000");
+            console.log("Server is run in port " + port);
         });
     }
 

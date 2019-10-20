@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { nodeCrypto, string } from "random-js";
-import User from "../Entities/User"
+import User from "../../Domain/Entities/User"
 
 
 const TOKEN_LENGTH = 48;
