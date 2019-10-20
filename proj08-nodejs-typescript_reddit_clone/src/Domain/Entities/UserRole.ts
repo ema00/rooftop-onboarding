@@ -8,19 +8,15 @@ class UserRole extends BaseEntity {
     @PrimaryGeneratedColumn()
     public readonly id: number;
     
-    private _type: UserRoleType;
+    @Column({ type: "enum", enum: UserRoleType, default: UserRoleType.GUEST,
+        unique: true, nullable: false })
+    public readonly type: UserRoleType;
 
 
     constructor(type: UserRoleType) {
         super();
-        this._type = type;
+        this.type = type;
     }
-
-
-    @Column({ type: "enum", enum: UserRoleType, default: UserRoleType.GUEST,
-        unique: true, nullable: false })
-    public get type(): UserRoleType { return this._type; }
-    public set type(value: UserRoleType) { this._type = value; }
 
 }
 
