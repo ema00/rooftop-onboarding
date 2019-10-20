@@ -1,4 +1,4 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, PrimaryColumn } from "typeorm";
 import { OneToOne } from "typeorm";
 import User from "./User";
 
@@ -6,7 +6,8 @@ import User from "./User";
 @Entity()
 class Session extends BaseEntity {
 
-    private _id: number;
+    private readonly NULL_TOKEN = "";
+
 
     private _user: User;
 
@@ -16,20 +17,25 @@ class Session extends BaseEntity {
     public constructor(user: User, token: string) {
         super();
         this._user = user;
-        this._token = token;
+        this._token = token ? token : this.NULL_TOKEN;
     }
 
 
-    @PrimaryGeneratedColumn()
-    public get id(): number { return this._id; }
-
+    @PrimaryColumn()
     @OneToOne(type => User)
     public get user(): User { return this._user; }
-    public set(value: User) { this._user = value; }
 
-    @Column()
+    @Column({ nullable: false, default: "" })
     public get token(): string { return this._token; }
     public set token(value: string) { this._token = value; }
+
+    public isValid(): boolean {
+        return this.token.valueOf() != this.NULL_TOKEN.valueOf();
+    }
+
+    public invalidateToken() {
+        this.token = this.NULL_TOKEN;
+    }
 
 }
 
