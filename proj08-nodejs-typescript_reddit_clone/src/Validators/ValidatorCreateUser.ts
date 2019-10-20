@@ -1,8 +1,8 @@
+import { Request } from "express";
+import { check, validationResult } from "express-validator";
 import UserRoleType from "../Entities/UserRoleType";
 import Validator from "./Validator";
 import ValidationError from "./ValidationError";
-import { Request } from "express";
-import { check, validationResult } from "express-validator";
 
 
 /* Validation constraints */

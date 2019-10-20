@@ -1,6 +1,6 @@
 import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from "typeorm";
 import { JoinTable, ManyToMany } from "typeorm";
-import UserRole from "./UserRole"
+import UserRole from "./UserRole";
 
 
 @Entity()
