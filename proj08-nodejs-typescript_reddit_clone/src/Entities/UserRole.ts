@@ -1,11 +1,5 @@
 import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from "typeorm";
-
-
-enum UserRoleType {
-    ADMIN = "admin",
-    ZEEPER = "zeeper",
-    GUEST = "guest",
-}
+import UserRoleType from "./UserRoleType";
 
 
 @Entity()
@@ -15,6 +9,12 @@ class UserRole extends BaseEntity {
     public readonly id: number;
     
     private _type: UserRoleType;
+
+
+    constructor(type: UserRoleType) {
+        super();
+        this._type = type;
+    }
 
 
     @Column({ type: "enum", enum: UserRoleType, default: UserRoleType.GUEST,

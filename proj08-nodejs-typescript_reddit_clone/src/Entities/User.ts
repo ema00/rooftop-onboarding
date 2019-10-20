@@ -51,7 +51,7 @@ class User extends BaseEntity {
     public set email(value: string) { this._email = value; }
 
     public hasRole(role: UserRole): boolean {
-        return !!(this.roles.find((r: UserRole) => r.type === role.type));
+        return !!this.roles && !!(this.roles.find((r: UserRole) => r.type === role.type));
     }
 
     public addRole(role: UserRole) {

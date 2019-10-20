@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import User from "../Entities/User";
+import ValidatorCreateUser from "../Validators/ValidatorCreateUser";
 
 
 export class UserController {
@@ -7,19 +8,28 @@ export class UserController {
     public static async save(req: Request, res: Response) {
         const hash = require("object-hash");
 
-        const { name, dni, password } = req.body;
+        const { name, dni, password, role, email } = req.body;
         
         const user = new User();
-        console.log(user);
         user.name = name;
         user.dni = dni;
+        user.roles = [];
+        user.addRole(role);
+        user.email = email;
         user.pass = hash(password, { algorithm: 'sha3-512', encoding: 'base64' });
 
         try {
-            await user.save();
-            user.pass = "";
-            res.status(201).json({ user });
-        } catch (error) {
+            const validator = new ValidatorCreateUser(req);
+            const errors = await validator.validationResult();
+            if (errors.length == 0) {
+                await user.save();
+                res.status(201).json({ user: { name: user.name, id: user.id } });
+            }
+            else {
+                res.status(400).json(errors);
+            }
+        }
+        catch (error) {
             res.status(500).json(error);
         }
     }

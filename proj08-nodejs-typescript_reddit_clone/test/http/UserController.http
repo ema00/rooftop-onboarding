@@ -9,14 +9,16 @@
 ### Create User, default values for Role and email
 ### Return Status 201
 # @name createUser
-POST  {{url}} HTTP/1.1
+POST {{url}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
 
 {
-    "name": "judas",
+    "name": "johnson",
     "dni": "25666666",
-    "password": "j"
+    "password": "benny999",
+    "role": "zeeper",
+    "email": "johnson999@gmail.com"
 }
 
 
@@ -25,6 +27,19 @@ Accept: application/json
 @userId = {{createUser.response.body.$.user.id}}
 GET {{url}}{{userId}} HTTP/1.1
 Accept: application/json
+
+
+### try to Create User, fail with errors
+### Return Status 400
+POST {{url}} HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+
+{
+    "name": "judas",
+    "dni": "25666666",
+    "password": "j"
+}
 
 
 ### Read an existing User
