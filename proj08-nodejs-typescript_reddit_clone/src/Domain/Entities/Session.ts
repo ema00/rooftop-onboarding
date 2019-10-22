@@ -18,6 +18,10 @@ class Session extends BaseEntity {
     }
 
 
+    public equals(other: Session): boolean {
+        return this.userId == other.userId && this.token.valueOf() == other.token.valueOf();
+    }
+
     public toJson() {
         return { 
             session: {

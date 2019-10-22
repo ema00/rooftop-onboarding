@@ -11,10 +11,14 @@ class AuthenticationService {
     }
 
     public async deleteSession(user: User) {
-        let session: Session | undefined = await Session.findOne({ userId: user.id });
+        let session: Session | undefined = await this.readSession(user);
         if (!!session) {
             await session.remove();
         }
+    }
+
+    public async readSession(user: User): Promise<Session | undefined> {
+        return await Session.findOne({ userId: user.id });
     }
 
 }
