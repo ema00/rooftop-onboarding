@@ -5,11 +5,7 @@ import User from "../../Domain/Entities/User";
 class AuthenticationService {
 
     public async createSession(user: User, token: string): Promise<Session> {
-        let session: Session | undefined = await Session.findOne({ where: { userId: user.id } });
-        if (session) {
-            await session.remove();
-        }
-        session = new Session(user.id, token);
+        const session = new Session(user.id, token);
         await session.save();
         return session;
     }

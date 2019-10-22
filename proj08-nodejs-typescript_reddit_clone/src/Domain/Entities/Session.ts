@@ -1,16 +1,13 @@
 import { Entity, BaseEntity, PrimaryColumn, Column } from "typeorm";
-import { OneToOne } from "typeorm";
-import User from "./User";
 
 
 @Entity()
 class Session extends BaseEntity {
 
     @PrimaryColumn()
-    @OneToOne(type => User)
     readonly userId: number;
 
-    @Column()
+    @Column({ update: true })
     readonly token: string;
 
 
