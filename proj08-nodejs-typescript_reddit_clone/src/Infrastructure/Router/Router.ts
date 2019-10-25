@@ -1,7 +1,7 @@
 import { Express } from "express";
 import bodyParser = require("body-parser");
 import { UserController } from "../Controllers/UserController";
-import { AuthController } from "../Controllers/AuthController";
+import { AuthenticationController } from "../Controllers/AuthenticationController";
 
 
 class Router {
@@ -21,18 +21,18 @@ class Router {
     }
 
     private setBodyParser() {
-        //this.express.use(bodyParser());
         this.express.use(bodyParser.urlencoded({ extended: false }));
         this.express.use(bodyParser.json());
     }
 
     private setUserRoutes() {
-        this.express.post('/users', UserController.save);
+        this.express.post('/users', UserController.create);
         this.express.get('/users/:id', UserController.read);
     }
 
     private setLoginRoutes() {
-        this.express.post("/authorize", AuthController.getToken);
+        this.express.post("/login", AuthenticationController.login);
+        this.express.post("/logout", AuthenticationController.logout);
     }
 
 }
