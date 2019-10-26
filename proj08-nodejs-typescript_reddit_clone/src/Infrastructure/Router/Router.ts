@@ -28,6 +28,7 @@ class Router {
     private setUserRoutes() {
         this.express.post('/users', UserController.create);
         this.express.get('/users/:id', UserController.read);
+        this.express.patch('/users/:id', UserController.update);
     }
 
     private setLoginRoutes() {
