@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import HashFactory from "../Services/HashFactory"
-import TokenFactory from "../Services/TokenFactory"
+import HashService from "../Services/HashService"
+import TokenService from "../Services/TokenService"
 import AuthenticationService from "../Services/AuthenticationService";
 import Session from "../../Domain/Entities/Session";
 import User from "../../Domain/Entities/User"
@@ -9,16 +9,16 @@ import User from "../../Domain/Entities/User"
 export class AuthenticationController {
 
     public static async login(req: Request, res: Response) {
-        const hashFactory = new HashFactory();
-        const tokenFactory = new TokenFactory();
+        const hashService = new HashService();
+        const tokenService = new TokenService();
         const authenticationService = new AuthenticationService();
 
         const { name, password } = req.body;
 
         try {
             const user = await User.findOne({ where: { name: name } });
-            const pass = hashFactory.getStringHash(password);
-            const token = tokenFactory.getToken();
+            const pass = hashService.getStringHash(password);
+            const token = tokenService.getToken();
 
             if (user && user.pass.valueOf() == pass.valueOf()) {
                 const session = await authenticationService.createSession(user, token);
@@ -29,7 +29,7 @@ export class AuthenticationController {
             }
         }
         catch (error) {
-            res.status(500).json({error});;
+            res.status(500).json({ error });;
         }
     }
 
@@ -56,7 +56,7 @@ export class AuthenticationController {
             }
         }
         catch (error) {
-            res.status(500).json({error});
+            res.status(500).json({ error });
         }
     }
 

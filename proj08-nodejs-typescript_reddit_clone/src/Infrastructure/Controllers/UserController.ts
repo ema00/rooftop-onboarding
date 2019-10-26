@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import ValidatorCreateUser from "../Validators/ValidatorCreateUser";
-import HashFactory from "../Services/HashFactory"
+import HashService from "../Services/HashService"
 import User from "../../Domain/Entities/User";
 import UserRole from "../../Domain/Entities/UserRole";
 import UserRoleType from "../../Domain/Entities/UserRoleType";
@@ -9,7 +9,7 @@ import UserRoleType from "../../Domain/Entities/UserRoleType";
 export class UserController {
 
     public static async create(req: Request, res: Response) {
-        const hashFactory = new HashFactory();
+        const hashService = new HashService();
 
         const { name, dni, password, role, email } = req.body;
         
@@ -20,7 +20,7 @@ export class UserController {
         if (!userRole) { userRole = new UserRole(UserRoleType.ZEEPER); }
         user.addRole(userRole);
         user.email = email;
-        user.pass = hashFactory.getStringHash(password);
+        user.pass = hashService.getStringHash(password);
 
         try {
             const validator = new ValidatorCreateUser(req);
