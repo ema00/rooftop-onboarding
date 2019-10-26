@@ -9,7 +9,7 @@ class User extends BaseEntity {
     @PrimaryGeneratedColumn()
     public readonly id: number;
 
-    @ManyToMany(type => UserRole, { eager: true, nullable: false, cascade: ["insert", "update"] })
+    @ManyToMany(type => UserRole, { eager: true, nullable: false, cascade: ["insert"] })
     @JoinTable()
     public roles: UserRole[];
 
