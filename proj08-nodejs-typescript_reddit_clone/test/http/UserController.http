@@ -14,11 +14,11 @@ Content-Type: application/json
 Accept: application/json
 
 {
-    "name": "johnson",
-    "dni": "25666666",
-    "password": "benny999",
+    "name": "jameson",
+    "dni": "25777777",
+    "password": "jameson999",
     "role": "zeeper",
-    "email": "johnson999@gmail.com"
+    "email": "jameson@gmail.com"
 }
 
 
@@ -58,7 +58,7 @@ Accept: application/json
 
 ### Read an existing User
 ### Return Status 200
-@id = 23000115
+@id = 38
 GET {{url}}{{id}} HTTP/1.1
 Accept: application/json
 

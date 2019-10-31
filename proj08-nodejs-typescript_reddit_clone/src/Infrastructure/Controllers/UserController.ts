@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { injectable } from 'inversify';
 import ValidatorCreateUser from "../Validators/ValidatorCreateUser";
 import HashService from "../Services/HashService"
 import User from "../../Domain/Entities/User";
@@ -6,9 +7,10 @@ import UserRole from "../../Domain/Entities/UserRole";
 import UserRoleType from "../../Domain/Entities/UserRoleType";
 
 
+@injectable()
 export class UserController {
 
-    public static async create(req: Request, res: Response) {
+    public async create(req: Request, res: Response) {
         const hashService = new HashService();
 
         const { name, dni, password, role, email } = req.body;
@@ -38,7 +40,7 @@ export class UserController {
         }
     }
 
-    public static async read(req: Request, res: Response) {
+    public async read(req: Request, res: Response) {
         const { id } = req.params;
         const user = await User.findOne(id);
 
@@ -50,7 +52,7 @@ export class UserController {
         }
     }
     
-    public static async update(req: Request, res: Response) {
+    public async update(req: Request, res: Response) {
         const { id, dni, email } = req.body;
 
         try {

@@ -1,8 +1,10 @@
 import express, { Express } from "express";
-import Router from "./Infrastructure/Router/Router";
 import "reflect-metadata";
 import * as dotenv from "dotenv";
+import container from "./inversify.config";
 import { createConnectionDB } from "./Infrastructure/Database/Configuration";
+import Router from "./Infrastructure/Router/Router";
+import { UserController } from "./Infrastructure/Controllers/UserController";
 
 
 class App {
@@ -15,7 +17,10 @@ class App {
         dotenv.config();
         this.app = express();
         createConnectionDB();
-        this.router = new Router(this.app);
+        this.router = new Router(
+            this.app,
+            container.get(UserController)
+        );
     }
     
 

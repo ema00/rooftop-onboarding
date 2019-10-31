@@ -1,4 +1,5 @@
 import { Express } from "express";
+import { inject } from "inversify";
 import bodyParser = require("body-parser");
 import { UserController } from "../Controllers/UserController";
 import { AuthenticationController } from "../Controllers/AuthenticationController";
@@ -7,10 +8,15 @@ import { AuthenticationController } from "../Controllers/AuthenticationControlle
 class Router {
 
     private express: Express;
+    private userController: UserController;
 
 
-    constructor(express: Express) {
+    constructor(
+        express: Express,
+        @inject(UserController) userController: UserController
+    ) {
         this.express = express;
+        this.userController = userController;
     }
 
 
@@ -26,9 +32,9 @@ class Router {
     }
 
     private setUserRoutes() {
-        this.express.post('/users', UserController.create);
-        this.express.get('/users/:id', UserController.read);
-        this.express.patch('/users/:id', UserController.update);
+        this.express.post('/users', this.userController.create);
+        this.express.get('/users/:id', this.userController.read);
+        this.express.patch('/users/:id', this.userController.update);
     }
 
     private setLoginRoutes() {
