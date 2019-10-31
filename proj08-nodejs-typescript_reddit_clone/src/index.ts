@@ -5,6 +5,7 @@ import container from "./inversify.config";
 import { createConnectionDB } from "./Infrastructure/Database/Configuration";
 import Router from "./Infrastructure/Router/Router";
 import { UserController } from "./Infrastructure/Controllers/UserController";
+import { AuthenticationController } from "./Infrastructure/Controllers/AuthenticationController";
 
 
 class App {
@@ -19,6 +20,7 @@ class App {
         createConnectionDB();
         this.router = new Router(
             this.app,
+            container.get(AuthenticationController),
             container.get(UserController)
         );
     }

@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { injectable } from 'inversify';
 import HashService from "../Services/HashService"
 import TokenService from "../Services/TokenService"
 import AuthenticationService from "../Services/AuthenticationService";
@@ -6,9 +7,10 @@ import Session from "../../Domain/Entities/Session";
 import User from "../../Domain/Entities/User"
 
 
+@injectable()
 export class AuthenticationController {
 
-    public static async login(req: Request, res: Response) {
+    public async login(req: Request, res: Response) {
         const hashService = new HashService();
         const tokenService = new TokenService();
         const authenticationService = new AuthenticationService();
@@ -33,7 +35,7 @@ export class AuthenticationController {
         }
     }
 
-    public static async logout(req: Request, res: Response) {
+    public async logout(req: Request, res: Response) {
         const authenticationService = new AuthenticationService();
 
         const { userId, token } = req.body;

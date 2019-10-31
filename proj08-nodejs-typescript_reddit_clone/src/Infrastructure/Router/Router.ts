@@ -9,13 +9,16 @@ class Router {
 
     private express: Express;
     private userController: UserController;
+    private authenticationController: AuthenticationController;
 
 
     constructor(
         express: Express,
+        @inject(AuthenticationController) authenticationController: AuthenticationController,
         @inject(UserController) userController: UserController
     ) {
         this.express = express;
+        this.authenticationController = authenticationController;
         this.userController = userController;
     }
 
@@ -38,8 +41,8 @@ class Router {
     }
 
     private setLoginRoutes() {
-        this.express.post("/login", AuthenticationController.login);
-        this.express.post("/logout", AuthenticationController.logout);
+        this.express.post("/login", this.authenticationController.login);
+        this.express.post("/logout",this.authenticationController.logout);
     }
 
 }
