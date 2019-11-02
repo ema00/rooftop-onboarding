@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { injectable } from 'inversify';
 import ValidatorCreateUser from "../Validators/ValidatorCreateUser";
-import HashService from "../Services/HashService"
+import HashService from "../Services/HashService";
 import User from "../../Domain/Entities/User";
 import UserRole from "../../Domain/Entities/UserRole";
 import UserRoleType from "../../Domain/Entities/UserRoleType";

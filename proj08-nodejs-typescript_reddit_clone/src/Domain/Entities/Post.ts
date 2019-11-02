@@ -16,7 +16,7 @@ class Post extends BaseEntity {
     @UpdateDateColumn()
     public updateDate: string;
 
-    @Column()
+    @Column({ unique: true })
     public readonly title: string;
 
     @Column()
@@ -24,6 +24,28 @@ class Post extends BaseEntity {
 
     @ManyToOne(type => User, user => user.posts)
     public readonly user: User;
+
+
+    constructor(title: string, content: string, user: User) {
+        super();
+        this.title = title;
+        this.content = content;
+        this.user = user;
+    }
+
+
+    public toJson() {
+        return {
+            post: {
+                id: this.id,
+                title: this.title,
+                content: this.content,
+                createDate: this.createDate,
+                updateDate: this.updateDate,
+                user: this.user.toJson().user,
+            }
+        }
+    }
 
 }
 

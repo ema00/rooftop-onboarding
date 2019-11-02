@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { injectable } from 'inversify';
-import HashService from "../Services/HashService"
-import TokenService from "../Services/TokenService"
+import HashService from "../Services/HashService";
+import TokenService from "../Services/TokenService";
 import AuthenticationService from "../Services/AuthenticationService";
 import Session from "../../Domain/Entities/Session";
-import User from "../../Domain/Entities/User"
+import User from "../../Domain/Entities/User";
 
 
 @injectable()

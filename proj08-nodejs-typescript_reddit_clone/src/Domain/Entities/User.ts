@@ -1,6 +1,7 @@
 import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { JoinTable, ManyToMany } from "typeorm";
 import UserRole from "./UserRole";
+import UserRoleType from "./UserRoleType";
 import Post from "./Post";
 
 
@@ -51,6 +52,10 @@ class User extends BaseEntity {
 
     public hasRole(role: UserRole): boolean {
         return !!this.roles && !!(this.roles.find((r: UserRole) => role.equals(r)));
+    }
+
+    public hasRoleType(roleType: UserRoleType): boolean {
+        return !!this.roles && !!(this.roles.find((r: UserRole) => r.type.valueOf() == roleType));
     }
 
     public addRole(role: UserRole) {
