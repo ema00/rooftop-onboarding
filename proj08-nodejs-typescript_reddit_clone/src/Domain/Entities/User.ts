@@ -1,6 +1,7 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { JoinTable, ManyToMany } from "typeorm";
 import UserRole from "./UserRole";
+import Post from "./Post";
 
 
 @Entity()
@@ -12,6 +13,9 @@ class User extends BaseEntity {
     @ManyToMany(type => UserRole, { eager: true, nullable: false, cascade: ["insert"] })
     @JoinTable()
     public roles: UserRole[];
+
+    @OneToMany(type => Post, post => post.user)
+    public posts: Post[];
 
     private _name: string;
 
