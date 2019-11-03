@@ -42,6 +42,23 @@ export class PostController {
         }
     }
 
+    public async read(req: Request, res: Response) {
+        const { id } = req.params;
+
+        try {
+            const post = await Post.findOne(id, { relations: ["user"] });
+            if (post) {
+                res.status(200).json(post.toJson());
+            }
+            else {
+                res.status(200).json();
+            }
+        }
+        catch (error) {
+            res.status(500).json(error);
+        }
+    }
+
 }
 
 export default PostController;

@@ -129,3 +129,17 @@ Accept: application/json
 {
 }
 
+
+### Find a post by id, post exists
+### Return Status 200
+@id = 9
+GET {{url}}{{id}} HTTP/1.1
+Accept: application/json
+
+
+### Find a post by id, post does not exist
+### Return Status 200
+@idNonExistent = 10
+GET {{url}}{{idNonExistent}} HTTP/1.1
+Accept: application/json
+
