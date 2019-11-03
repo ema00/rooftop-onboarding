@@ -25,7 +25,7 @@ export class PostController {
         }
     }
 
-    public async read(req: Request, res: Response) {
+    public async search(req: Request, res: Response) {
         const { userId, title, content } = req.body;
 
         try {

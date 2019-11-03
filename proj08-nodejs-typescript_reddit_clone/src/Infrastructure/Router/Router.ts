@@ -52,7 +52,7 @@ class Router {
 
     private setPostRoutes() {
         this.express.post("/posts", this.postController.create);
-        this.express.get("/posts",this.postController.read);
+        this.express.get("/posts",this.postController.search);
     }
 
 }
