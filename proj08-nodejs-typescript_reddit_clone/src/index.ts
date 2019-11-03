@@ -6,6 +6,7 @@ import { createConnectionDB } from "./Infrastructure/Database/Configuration";
 import Router from "./Infrastructure/Router/Router";
 import { UserController } from "./Infrastructure/Controllers/UserController";
 import { AuthenticationController } from "./Infrastructure/Controllers/AuthenticationController";
+import PostController from "./Infrastructure/Controllers/PostController";
 
 
 class App {
@@ -21,7 +22,8 @@ class App {
         this.router = new Router(
             this.app,
             container.get(AuthenticationController),
-            container.get(UserController)
+            container.get(UserController),
+            container.get(PostController)
         );
     }
     
