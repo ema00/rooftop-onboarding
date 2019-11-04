@@ -130,6 +130,55 @@ Accept: application/json
 }
 
 
+### Search the all Posts paginated
+### Return Status 200
+GET {{url}} HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+
+{
+    "page": 0,
+    "size": 10
+}
+
+
+### Search the all Posts paginated, page out of range (above)
+### Return Status 200
+GET {{url}} HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+
+{
+    "page": 1000000,
+    "size": 50
+}
+
+
+### Search the all Posts paginated, page out of range (below)
+### Return Status 200
+GET {{url}} HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+
+{
+    "page": -10,
+    "size": 50
+}
+
+
+### Search the all Posts paginated, values not valid
+### Return Status 200
+GET {{url}} HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+
+{
+    "page": "NOT A NUMBER",
+    "size": 50
+}
+
+
+
 ### Find a post by id, post exists
 ### Return Status 200
 @id = 9
