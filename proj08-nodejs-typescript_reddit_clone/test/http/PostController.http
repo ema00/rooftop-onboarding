@@ -116,7 +116,9 @@ Content-Type: application/json
 Accept: application/json
 
 {
-    "content": {{NotExisting}}
+    "content": {{NotExisting}},
+    "page": 0,
+    "size": 10
 }
 
 
@@ -162,11 +164,11 @@ Accept: application/json
 
 {
     "page": -10,
-    "size": 50
+    "size": 20
 }
 
 
-### Search the all Posts paginated, values not valid
+### Search the all Posts paginated, page not valid
 ### Return Status 200
 GET {{url}} HTTP/1.1
 Content-Type: application/json
@@ -177,6 +179,17 @@ Accept: application/json
     "size": 50
 }
 
+
+### Search the all Posts paginated, size not valid
+### Return Status 200
+GET {{url}} HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+
+{
+    "page": 0,
+    "size": "NOT A NUMBER"
+}
 
 
 ### Find a post by id, post exists

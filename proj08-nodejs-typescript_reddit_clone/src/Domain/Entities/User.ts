@@ -50,6 +50,18 @@ class User extends BaseEntity {
     public set email(value: string) { this._email = value; }
 
 
+    public canPost(): boolean {
+        return this.hasRoleType(UserRoleType.ADMIN) || this.hasRoleType(UserRoleType.ZEEPER);
+    }
+
+    public canComment(): boolean {
+        return this.hasRoleType(UserRoleType.ADMIN) || this.hasRoleType(UserRoleType.ZEEPER);
+    }
+
+    public canReadComments(): boolean {
+        return this.hasRoleType(UserRoleType.ADMIN) || this.hasRoleType(UserRoleType.ZEEPER);
+    }
+    
     public hasRole(role: UserRole): boolean {
         return !!this.roles && !!(this.roles.find((r: UserRole) => role.equals(r)));
     }
