@@ -1,34 +1,33 @@
 import { Request, Response } from "express";
-import { injectable } from 'inversify';
+import { injectable } from "inversify";
 import ValidatorCreateUser from "../Validators/ValidatorCreateUser";
-import HashService from "../Services/HashService";
-import User from "../../Domain/Entities/User";
-import UserRole from "../../Domain/Entities/UserRole";
-import UserRoleType from "../../Domain/Entities/UserRoleType";
+import HashServiceObjecthash from "../Services/HashServiceObjecthash";
+import HashService from "../../Application/Services/HashService";
+import UserService from "../../Application/Services/UserService";
+import UserServiceImpl from "../../Application/Services/UserServiceImpl";
 
 
 @injectable()
 export class UserController {
 
-    public async create(req: Request, res: Response) {
-        const hashService = new HashService();
+    private userService: UserService;
+    private hashService: HashService;
 
+
+    constructor() {
+        this.hashService = new HashServiceObjecthash();
+        this.userService = new UserServiceImpl(this.hashService);
+    }
+
+
+    public create = async (req: Request, res: Response) => {
         const { name, dni, password, role, email } = req.body;
-        
-        const user = new User();
-        user.name = name;
-        user.dni = dni;
-        let userRole = await UserRole.findOne({ type: role });
-        if (!userRole) { userRole = new UserRole(UserRoleType.ZEEPER); }
-        user.addRole(userRole);
-        user.email = email;
-        user.pass = hashService.getStringHash(password);
 
         try {
             const validator = new ValidatorCreateUser(req);
             const errors = await validator.validationResult();
             if (errors.length == 0) {
-                await user.save();
+                const user = await this.userService.create(name, Number(dni), password, role, email);
                 res.status(201).json(user.toJson());
             }
             else {
@@ -40,28 +39,33 @@ export class UserController {
         }
     }
 
-    public async read(req: Request, res: Response) {
+    public read = async (req: Request, res: Response) => {
         const { id } = req.params;
-        const user = await User.findOne(id);
 
-        if (user) {
-            res.status(200).json(user.toJson());
+        try {
+            const user = await this.userService.findOne(Number(id));
+            if (user) {
+                res.status(200).json(user.toJson());
+            }
+            else {
+                res.status(204).json();
+            }
         }
-        else {
-            res.status(200).json();
+        catch (error) {
+            res.status(500).json(error);
         }
     }
     
-    public async update(req: Request, res: Response) {
+    public update = async (req: Request, res: Response) => {
         const { id, dni, email } = req.body;
 
         try {
-            const user = await User.findOne(id);
+            const user = await this.userService.update(id, dni, email);
             if (user) {
-                user.dni = dni ? dni : user.dni;
-                user.email = email ? email : user.email;
-                await user.save();
                 res.status(200).json(user.toJson());
+            }
+            else {
+                res.status(204).json();
             }
         }
         catch (error) {
