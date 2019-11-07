@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
-import { injectable } from 'inversify';
-import HashService from "../Services/HashService";
+import { injectable } from "inversify";
 import TokenService from "../Services/TokenService";
+import HashServiceObjecthash from "../Services/HashServiceObjecthash";
+import HashService from "../../Application/Services/HashService";
 import AuthenticationService from "../Services/AuthenticationService";
 import Session from "../../Domain/Entities/Session";
 import User from "../../Domain/Entities/User";
@@ -10,8 +11,16 @@ import User from "../../Domain/Entities/User";
 @injectable()
 export class AuthenticationController {
 
+    private hashService: HashService;
+
+
+    constructor() {
+        this.hashService = new HashServiceObjecthash();
+    }
+
+
     public async login(req: Request, res: Response) {
-        const hashService = new HashService();
+        const hashService = this.hashService;
         const tokenService = new TokenService();
         const authenticationService = new AuthenticationService();
 
