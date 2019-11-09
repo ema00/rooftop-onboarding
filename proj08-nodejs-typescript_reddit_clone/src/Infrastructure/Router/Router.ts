@@ -1,9 +1,9 @@
 import { Express } from "express";
 import { inject } from "inversify";
 import bodyParser = require("body-parser");
-import { UserController } from "../Controllers/UserController";
-import { AuthenticationController } from "../Controllers/AuthenticationController";
-import { PostController } from "../Controllers/PostController";
+import UserController from "../Controllers/UserController";
+import AuthenticationController from "../Controllers/AuthenticationController";
+import PostController from "../Controllers/PostController";
 
 
 class Router {

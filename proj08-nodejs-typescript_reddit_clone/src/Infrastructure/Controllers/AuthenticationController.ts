@@ -10,7 +10,7 @@ import User from "../../Domain/Entities/User";
 
 
 @injectable()
-export class AuthenticationController {
+class AuthenticationController {
 
     private hashService: HashService;
     private tokenService: TokenService;
@@ -68,3 +68,5 @@ export class AuthenticationController {
     }
 
 }
+
+export default AuthenticationController;

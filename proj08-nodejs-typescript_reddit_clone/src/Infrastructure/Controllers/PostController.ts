@@ -6,7 +6,7 @@ import PostServiceImpl from "../../Application/Services/PostServiceImpl";
 
 
 @injectable()
-export class PostController {
+class PostController {
 
     private postService: PostService;
 

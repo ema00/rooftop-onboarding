@@ -4,8 +4,8 @@ import * as dotenv from "dotenv";
 import container from "./inversify.config";
 import { createConnectionDB } from "./Infrastructure/Database/Configuration";
 import Router from "./Infrastructure/Router/Router";
-import { UserController } from "./Infrastructure/Controllers/UserController";
-import { AuthenticationController } from "./Infrastructure/Controllers/AuthenticationController";
+import UserController from "./Infrastructure/Controllers/UserController";
+import AuthenticationController from "./Infrastructure/Controllers/AuthenticationController";
 import PostController from "./Infrastructure/Controllers/PostController";
 
 
