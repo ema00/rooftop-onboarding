@@ -1,6 +1,8 @@
+import { injectable } from "inversify";
 import HashService from "../../Application/Services/HashService";
 
 
+@injectable()
 class HashServiceObjecthash implements HashService {
     
     private readonly hash = require("object-hash");

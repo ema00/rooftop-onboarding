@@ -1,22 +1,18 @@
 import { Request, Response } from "express";
-import { injectable } from "inversify";
+import { injectable, inject } from "inversify";
+import TYPES from "../../types";
 import ValidatorCreateUser from "../Validators/ValidatorCreateUser";
-import HashServiceObjecthash from "../Services/HashServiceObjecthash";
-import HashService from "../../Application/Services/HashService";
 import UserService from "../../Application/Services/UserService";
-import UserServiceImpl from "../../Application/Services/UserServiceImpl";
 
 
 @injectable()
-export class UserController {
+class UserController {
 
     private userService: UserService;
-    private hashService: HashService;
 
 
-    constructor() {
-        this.hashService = new HashServiceObjecthash();
-        this.userService = new UserServiceImpl(this.hashService);
+    constructor(@inject(TYPES.UserService) userService: UserService) {
+        this.userService = userService;
     }
 
 
@@ -40,10 +36,14 @@ export class UserController {
     }
 
     public read = async (req: Request, res: Response) => {
-        const { id } = req.params;
+        const id = Number(req.params.id);
+        if (isNaN(Number(id))) {
+            res.status(400).json();
+            return;
+        }
 
         try {
-            const user = await this.userService.findOne(Number(id));
+            const user = await this.userService.findOne(id);
             if (user) {
                 res.status(200).json(user.toJson());
             }
@@ -74,3 +74,5 @@ export class UserController {
     }
 
 }
+
+export default UserController;

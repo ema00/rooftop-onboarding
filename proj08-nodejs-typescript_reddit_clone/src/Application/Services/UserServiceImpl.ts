@@ -1,3 +1,5 @@
+import { injectable, inject } from "inversify";
+import TYPES from "../../types";
 import HashService from "../Services/HashService";
 import UserService from "./UserService";
 import User from "../../Domain/Entities/User";
@@ -5,12 +7,13 @@ import UserRole from "../../Domain/Entities/UserRole";
 import UserRoleType from "../../Domain/Entities/UserRoleType";
 
 
+@injectable()
 class UserServiceImpl implements UserService {
 
     private hashService: HashService;
 
-    
-    constructor(hashService: HashService) {
+
+    constructor(@inject(TYPES.HashService) hashService: HashService) {
         this.hashService = hashService;
     }
 
@@ -40,6 +43,8 @@ class UserServiceImpl implements UserService {
     }
 
     public async findOne(id: number): Promise<User | undefined> {
+        if (!id) { throw new Error("User id not valid."); }
+
         return await User.findOne(id);
     }
 
