@@ -1,10 +1,12 @@
 import { isUndefined, isNull } from "util";
 import { Like } from "typeorm";
+import { injectable } from "inversify";
 import PostService from "./PostService";
 import User from "../../Domain/Entities/User";
 import Post from "../../Domain/Entities/Post";
 
 
+@injectable()
 class PostServiceImpl implements PostService {
 
     private readonly MAX_PAGE_SIZE = 50;

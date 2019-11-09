@@ -12,7 +12,7 @@
 @title = "Post #2"
 @content = "Content of the second post ;), aight!"
 @userId = 38
-POST  {{url}} HTTP/1.1
+POST {{url}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
 
@@ -200,7 +200,7 @@ Accept: application/json
 
 
 ### Find a post by id, post does not exist
-### Return Status 200
+### Return Status 204
 @idNonExistent = 10
 GET {{url}}{{idNonExistent}} HTTP/1.1
 Accept: application/json

@@ -1,8 +1,8 @@
 import { isUndefined, isNull } from "util";
 import { Request, Response } from "express";
-import { injectable } from "inversify";
+import { injectable, inject } from "inversify";
+import TYPES from "../../types";
 import PostService from "../../Application/Services/PostService";
-import PostServiceImpl from "../../Application/Services/PostServiceImpl";
 
 
 @injectable()
@@ -11,8 +11,8 @@ class PostController {
     private postService: PostService;
 
 
-    constructor() {
-        this.postService = new PostServiceImpl();
+    constructor(@inject(TYPES.PostService) postService: PostService) {
+        this.postService = postService;
     }
 
 	public create = async (req: Request, res: Response) => {

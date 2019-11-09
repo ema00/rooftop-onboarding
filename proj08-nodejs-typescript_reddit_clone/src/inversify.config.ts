@@ -7,10 +7,12 @@ import HashService from "./Application/Services/HashService";
 import TokenService from "./Application/Services/TokenService";
 import UserService from "./Application/Services/UserService";
 import AuthenticationService from "./Application/Services/AuthenticationService";
+import PostService from "./Application/Services/PostService";
 import HashServiceObjecthash from "./Infrastructure/Services/HashServiceObjecthash";
 import TokenServiceRandomjs from "./Infrastructure/Services/TokenServiceRandomjs";
 import UserServiceImpl from "./Application/Services/UserServiceImpl";
 import AuthenticationServiceImpl from "./Application/Services/AuthenticationServiceImpl";
+import PostServiceImpl from "./Application/Services/PostServiceImpl";
 
 
 var container = new Container();
@@ -25,5 +27,6 @@ container.bind<HashService>(TYPES.HashService).to(HashServiceObjecthash);
 container.bind<TokenService>(TYPES.TokenService).to(TokenServiceRandomjs);
 container.bind<UserService>(TYPES.UserService).to(UserServiceImpl);
 container.bind<AuthenticationService>(TYPES.AuthenticationService).to(AuthenticationServiceImpl);
+container.bind<PostService>(TYPES.PostService).to(PostServiceImpl);
 
 export default container;
