@@ -25,13 +25,19 @@ class UserServiceImpl implements UserService {
         if (!dni || isNaN(dni)) { throw new Error("DNI not valid."); }
         if (!password) { throw new Error("Password cannot be empty."); }
         if (!email) { throw new Error("E-mail cannot be empty."); }
+        if (role &&
+            role.valueOf() !== UserRoleType.GUEST &&
+            role.valueOf() !== UserRoleType.ZEEPER &&
+            role.valueOf() !== UserRoleType.ADMIN
+        ) {
+            throw new Error("User role not valid.");
+        }
 
         const user: User = new User();
         user.name = name;
         user.dni = dni;
         user.pass = this.hashService.getStringHash(password);
-        let userRole = await UserRole.findOne({ where: { type: role } });
-        if (!userRole) { userRole = new UserRole(UserRoleType.ZEEPER); }
+        const userRole = await this.roleFromRoleType(role);
         user.addRole(userRole);
         user.email = email;
         user.pass = this.hashService.getStringHash(password);
@@ -58,6 +64,22 @@ class UserServiceImpl implements UserService {
 
         return user;
     }
+
+    // This one ensures User Roles exist in the database
+    private async roleFromRoleType(role: string): Promise<UserRole> {
+        let userRole = await UserRole.findOne({ where: { type: role } });
+        if (!userRole) {
+            switch (role) {
+                case UserRoleType.ADMIN:
+                    userRole = new UserRole(UserRoleType.ADMIN);
+                case UserRoleType.ZEEPER:
+                    userRole = new UserRole(UserRoleType.ZEEPER);
+                default:
+                    userRole = new UserRole(UserRoleType.GUEST);
+            }
+        }
+        return userRole;
+    };
 
 }
 
