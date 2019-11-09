@@ -26,10 +26,10 @@ class AuthenticationServiceImpl implements AuthenticationService {
 
     public async login(user: User, password: string): Promise<Session | null> {
         if (isUndefined(user) || isNull(user)) {
-            throw new Error("Cannot generate token for invalid user.");
+            throw new Error().message = "Cannot generate token for invalid user.";
         }
         if (isUndefined(password) || isNull(password)) {
-            throw new Error("Invalid password.");
+            throw new Error().message = "Invalid password.";
         }
         
         const pass = this.hashService.getStringHash(password);
@@ -46,10 +46,10 @@ class AuthenticationServiceImpl implements AuthenticationService {
 
     public async logout(user: User, session: Session): Promise<void> {
         if (isUndefined(user) || isNull(user)) {
-            throw new Error("Invalid user.");
+            throw new Error().message = "Invalid user.";
         }
         if (isUndefined(session) || isNull(session)) {
-            throw new Error("Invalid session.");
+            throw new Error().message = "Invalid session.";
         }
 
         let storedSession: Session | undefined = await this.readSession(user);
@@ -60,7 +60,7 @@ class AuthenticationServiceImpl implements AuthenticationService {
 
     public async readSession(user: User): Promise<Session | undefined> {
         if (isUndefined(user) || isNull(user)) {
-            throw new Error("Invalid user.");
+            throw new Error().message = "Invalid user.";
         }
 
         return await Session.findOne({ userId: user.id });
@@ -68,7 +68,7 @@ class AuthenticationServiceImpl implements AuthenticationService {
 
     public async isLoggedIn(session: Session): Promise<boolean> {
         if (isUndefined(session) || isNull(session)) {
-            throw new Error("Invalid session.");
+            throw new Error().message = "Invalid session.";
         }
 
         return !!(await Session.findOne({ where: { id: session.userId, token: session.token } }));

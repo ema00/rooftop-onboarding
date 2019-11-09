@@ -21,17 +21,20 @@ class UserServiceImpl implements UserService {
     public async create(
         name: string, dni: number, password: string, role: string, email: string): Promise<User> {
         
-        if (!name) { throw new Error("Name of User cannot be empty."); }
-        if (!dni || isNaN(dni)) { throw new Error("DNI not valid."); }
-        if (!password) { throw new Error("Password cannot be empty."); }
-        if (!email) { throw new Error("E-mail cannot be empty."); }
+        if (!name) { throw new Error().message = "Name of User cannot be empty."; }
+        if (!dni || isNaN(dni)) { throw new Error().message = "DNI not valid."; }
+        if (!password) { throw new Error().message = "Password cannot be empty."; }
+        if (!email) { throw new Error().message = "E-mail cannot be empty."; }
         if (role &&
             role.valueOf() !== UserRoleType.GUEST &&
             role.valueOf() !== UserRoleType.ZEEPER &&
             role.valueOf() !== UserRoleType.ADMIN
         ) {
-            throw new Error("User role not valid.");
+            throw new Error().message = "User role not valid.";
         }
+
+        const otherUserSameName = await User.findOne({ where: { name: name } });
+		if (otherUserSameName) { throw new Error().message = "User name already exists."; }
 
         const user: User = new User();
         user.name = name;
@@ -47,13 +50,13 @@ class UserServiceImpl implements UserService {
     }
 
     public async findOne(id: number): Promise<User | undefined> {
-        if (!id) { throw new Error("User id not valid."); }
+        if (!id) { throw new Error().message = "User id not valid."; }
 
         return await User.findOne(id);
     }
 
     public async update(id: number, dni: number, email: string): Promise<User | undefined> {
-        if (dni && isNaN(dni)) { throw new Error("DNI not valid."); }
+        if (dni && isNaN(dni)) { throw new Error().message = "DNI not valid."; }
 
         const user = await this.findOne(id);        
         if (user) {

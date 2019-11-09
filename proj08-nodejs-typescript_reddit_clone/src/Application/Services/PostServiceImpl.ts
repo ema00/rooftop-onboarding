@@ -15,10 +15,15 @@ class PostServiceImpl implements PostService {
 	public async create(userId: number, title: string, content: string): Promise<Post> {
         const user = await User.findOne(userId);
 
-        if (!user) { throw new Error("Not valid User id."); }
-		if (!user.canPost()) { throw new Error("User has no privilege for creating a Post."); }
-		if (!title) { throw new Error("Post title cannot be empty."); }
-		if (!content) { throw new Error("Post content cannot be empty."); }
+        if (!user) { throw new Error().message = "Not valid User id."; }
+		if (!title) { throw new Error().message = "Post title cannot be empty."; }
+		if (!content) { throw new Error().message = "Post content cannot be empty."; }
+		if (!user.canPost()) {
+			throw new Error().message = "User has no privilege for creating a Post.";
+		}
+
+		const otherPostSameTitle = await Post.findOne({ where: { title: title } });
+		if (otherPostSameTitle) { throw new Error().message = "Post title already exists"; }
 
 		const post = new Post(title, content, user);
 		await post.save();
