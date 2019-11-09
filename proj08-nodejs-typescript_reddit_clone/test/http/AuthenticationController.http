@@ -51,7 +51,7 @@ Accept: application/json
 }
 
 
-### Request Token for a non-existent User
+### Request Token for a non-existing User
 ### Return Status 400
 @userNameNonExistent = "juancho"
 POST {{loginUrl}} HTTP/1.1
@@ -64,7 +64,7 @@ Accept: application/json
 }
 
 
-### Request Token for an existent User, but wrong password
+### Request Token for an existing User, but wrong password
 ### Return Status 400
 @passwordWrong = "johnsonsPass"
 POST {{loginUrl}} HTTP/1.1

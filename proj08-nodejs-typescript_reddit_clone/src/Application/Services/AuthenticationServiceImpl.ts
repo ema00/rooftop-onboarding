@@ -1,4 +1,6 @@
 import { isUndefined, isNull } from "util";
+import { injectable, inject } from "inversify";
+import TYPES from "../../types";
 import AuthenticationService from "./AuthenticationService";
 import TokenService from "./TokenService";
 import HashService from "./HashService";
@@ -6,13 +8,17 @@ import Session from "../../Domain/Entities/Session";
 import User from "../../Domain/Entities/User";
 
 
+@injectable()
 class AuthenticationServiceImpl implements AuthenticationService {
 
     private readonly tokenService: TokenService;
     private readonly hashService: HashService;
 
 
-    constructor(tokenService: TokenService, hashService: HashService) {
+    constructor(
+        @inject(TYPES.TokenService) tokenService: TokenService,
+        @inject(TYPES.HashService) hashService: HashService) {
+        
         this.tokenService = tokenService;
         this.hashService = hashService;
     }

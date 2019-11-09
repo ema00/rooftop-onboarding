@@ -1,7 +1,9 @@
+import { injectable } from "inversify";
 import { nodeCrypto, string } from "random-js";
 import TokenService from "../../Application/Services/TokenService";
 
 
+@injectable()
 class TokenServiceRandomjs implements TokenService {
 
     private readonly TOKEN_LENGTH = 88;

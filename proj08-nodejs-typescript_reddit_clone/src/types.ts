@@ -2,7 +2,9 @@
 
 let TYPES = {
     HashService: Symbol("HashService"),
-    UserService: Symbol("UserService")
+    TokenService: Symbol("TokenService"),
+    UserService: Symbol("UserService"),
+    AuthenticationService: Symbol("AuthenticationService")
 };
 
 export default TYPES;

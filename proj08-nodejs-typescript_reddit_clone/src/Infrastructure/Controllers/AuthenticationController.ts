@@ -1,10 +1,7 @@
 import { Request, Response } from "express";
-import { injectable } from "inversify";
-import HashServiceObjecthash from "../Services/HashServiceObjecthash";
-import TokenServiceRandomjs from "../Services/TokenServiceRandomjs";
+import { injectable, inject } from "inversify";
+import TYPES from "../../types";
 import AuthenticationService from "../../Application/Services/AuthenticationServiceImpl";
-import HashService from "../../Application/Services/HashService";
-import TokenService from "../../Application/Services/TokenService";
 import Session from "../../Domain/Entities/Session";
 import User from "../../Domain/Entities/User";
 
@@ -12,16 +9,14 @@ import User from "../../Domain/Entities/User";
 @injectable()
 class AuthenticationController {
 
-    private hashService: HashService;
-    private tokenService: TokenService;
+
     private authenticationService: AuthenticationService;
 
 
-    constructor() {
-        this.hashService = new HashServiceObjecthash();
-        this.tokenService = new TokenServiceRandomjs();
-        this.authenticationService =
-            new AuthenticationService(this.tokenService, this.hashService);
+    constructor(
+        @inject(TYPES.AuthenticationService) authenticationService: AuthenticationService) {
+        
+        this.authenticationService = authenticationService;
     }
 
 
@@ -44,7 +39,7 @@ class AuthenticationController {
             }
         }
         catch (error) {
-            res.status(500).json({ error });;
+            res.status(500).json({ error });
         }
     }
 

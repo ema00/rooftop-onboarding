@@ -26,8 +26,6 @@ class UserServiceImpl implements UserService {
         if (!password) { throw new Error("Password cannot be empty."); }
         if (!email) { throw new Error("E-mail cannot be empty."); }
 
-        console.log(name);
-
         const user: User = new User();
         user.name = name;
         user.dni = dni;
