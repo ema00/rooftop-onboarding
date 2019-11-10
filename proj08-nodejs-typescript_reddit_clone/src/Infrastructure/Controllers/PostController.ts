@@ -15,6 +15,7 @@ class PostController {
         this.postService = postService;
     }
 
+    
 	public create = async (req: Request, res: Response) => {
         const { userId, title, content } = req.body;
 
