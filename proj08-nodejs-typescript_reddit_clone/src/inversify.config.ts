@@ -1,5 +1,6 @@
 import { Container } from "inversify";
 import TYPES from "./types";
+import AuthenticationMiddleware from "./Infrastructure/Middlewares/AuthenticationMiddleware";
 import UserController from "./Infrastructure/Controllers/UserController";
 import AuthenticationController from "./Infrastructure/Controllers/AuthenticationController";
 import PostController from "./Infrastructure/Controllers/PostController";
@@ -16,6 +17,9 @@ import PostServiceImpl from "./Application/Services/PostServiceImpl";
 
 
 var container = new Container();
+
+// Middlewares
+container.bind<AuthenticationMiddleware>(AuthenticationMiddleware).toSelf();
 
 // Controllers
 container.bind<UserController>(UserController).toSelf();

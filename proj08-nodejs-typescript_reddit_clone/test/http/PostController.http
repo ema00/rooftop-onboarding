@@ -1,23 +1,66 @@
 // Tests for the Post Controller
 
-### Posts endpoint
+### Domain URL
 @domain = http://localhost:3000/
-@endpoint = posts/
-@url = {{domain}}{{endpoint}}
 
 
-### Create Post
-### Return Status 201
-# @name createPost
-@title = "Post #2"
-@content = "Content of the second post ;), aight!"
-@userId = 38
-POST {{url}} HTTP/1.1
+### Posts endpoint
+@postsEndpoint = posts/
+@postsUrl = {{domain}}{{postsEndpoint}}
+
+
+### Authentication endpoints
+@loginEndpoint = login/
+@logoutEndpoint = logout/
+@loginUrl = {{domain}}{{loginEndpoint}}
+@logoutUrl = {{domain}}{{logoutEndpoint}}
+
+
+### Login, necessary to access the Posts endpoint
+### Request Token for an existing User, right password
+### Return Status 200
+# @name loginUser
+@userName = "johnson"
+@userPassword = "benny999"
+POST {{loginUrl}} HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+
+{
+    "name": {{userName}},
+    "password": {{userPassword}}
+}
+
+
+### Token for querying the Posts endpoint
+@userId = {{loginUser.response.body.$.session.userId}}
+@token = "{{loginUser.response.body.$.session.token}}"
+
+
+### Logout an existing User, right session
+### Return Status 200; logout if user is logged in
+POST {{logoutUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
 
 {
     "userId": {{userId}},
+    "token": {{token}}
+}
+
+
+### Create Post
+### Return Status 201
+# @name createPost
+@title = "Post number 11"
+@content = "Content of the 11th post..."
+POST {{postsUrl}} HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+
+{
+    "userId": {{userId}},
+    "token": {{token}},
     "title": {{title}},
     "content": {{content}}
 }
@@ -25,24 +68,26 @@ Accept: application/json
 
 ### Search the Posts of a User by id
 ### Return Status 200
-@userIdSearch = 38
-GET {{url}} HTTP/1.1
+GET {{postsUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
 
 {
-    "userId": {{userIdSearch}}
+    "userId": {{userId}},
+    "token": {{token}}
 }
 
 
 ### Search the Posts by title, text search
 ### Return Status 200
 @titleLike = "#"
-GET {{url}} HTTP/1.1
+GET {{postsUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
 
 {
+    "userId": {{userId}},
+    "token": {{token}},
     "title": {{titleLike}}
 }
 
@@ -50,22 +95,26 @@ Accept: application/json
 ### Search the Posts by content, text search
 ### Return Status 200
 @contentLike = "first"
-GET {{url}} HTTP/1.1
+GET {{postsUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
 
 {
+    "userId": {{userId}},
+    "token": {{token}},
     "content": {{contentLike}}
 }
 
 
 ### Search the Posts by title and content, text search
 ### Return Status 200
-GET {{url}} HTTP/1.1
+GET {{postsUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
 
 {
+    "userId": {{userId}},
+    "token": {{token}},
     "title": {{titleLike}},
     "content": {{contentLike}}
 }
@@ -73,12 +122,13 @@ Accept: application/json
 
 ### Search the Posts by userId title and content
 ### Return Status 200
-GET {{url}} HTTP/1.1
+GET {{postsUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
 
 {
-    "userId": {{userIdSearch}},
+    "userId": {{userId}},
+    "token": {{token}},
     "title": {{titleLike}},
     "content": {{contentLike}}
 }
@@ -86,12 +136,13 @@ Accept: application/json
 
 ### Search the Posts by userId title and content, userId does not exist
 ### Return Status 200
-GET {{url}} HTTP/1.1
+GET {{postsUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
 
 {
     "userId": -10,
+    "token": {{token}},
     "title": {{titleLike}},
     "content": {{contentLike}}
 }
@@ -100,22 +151,26 @@ Accept: application/json
 ### Search the Posts by title, title does not exist
 ### Return Status 200
 @NotExisting = "zzzzzzzzzzzzzzzzzzzzzzzzzzzeep"
-GET {{url}} HTTP/1.1
+GET {{postsUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
 
 {
+    "userId": {{userId}},
+    "token": {{token}},
     "title": {{NotExisting}}
 }
 
 
 ### Search the Posts by content, content does not exist
 ### Return Status 200
-GET {{url}} HTTP/1.1
+GET {{postsUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
 
 {
+    "userId": {{userId}},
+    "token": {{token}},
     "content": {{NotExisting}},
     "page": 0,
     "size": 10
@@ -124,21 +179,25 @@ Accept: application/json
 
 ### Search the Posts without conditions, returns ALL posts
 ### Return Status 200
-GET {{url}} HTTP/1.1
+GET {{postsUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
 
 {
+    "userId": {{userId}},
+    "token": {{token}}
 }
 
 
 ### Search the all Posts paginated
 ### Return Status 200
-GET {{url}} HTTP/1.1
+GET {{postsUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
 
 {
+    "userId": {{userId}},
+    "token": {{token}},
     "page": 0,
     "size": 10
 }
@@ -146,11 +205,13 @@ Accept: application/json
 
 ### Search the all Posts paginated, page out of range (above)
 ### Return Status 200
-GET {{url}} HTTP/1.1
+GET {{postsUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
 
 {
+    "userId": {{userId}},
+    "token": {{token}},
     "page": 1000000,
     "size": 50
 }
@@ -158,11 +219,13 @@ Accept: application/json
 
 ### Search the all Posts paginated, page out of range (below)
 ### Return Status 200
-GET {{url}} HTTP/1.1
+GET {{postsUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
 
 {
+    "userId": {{userId}},
+    "token": {{token}},
     "page": -10,
     "size": 20
 }
@@ -170,11 +233,13 @@ Accept: application/json
 
 ### Search the all Posts paginated, page not valid
 ### Return Status 200
-GET {{url}} HTTP/1.1
+GET {{postsUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
 
 {
+    "userId": {{userId}},
+    "token": {{token}},
     "page": "NOT A NUMBER",
     "size": 50
 }
@@ -182,11 +247,13 @@ Accept: application/json
 
 ### Search the all Posts paginated, size not valid
 ### Return Status 200
-GET {{url}} HTTP/1.1
+GET {{postsUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
 
 {
+    "userId": {{userId}},
+    "token": {{token}},
     "page": 0,
     "size": "NOT A NUMBER"
 }
@@ -195,13 +262,25 @@ Accept: application/json
 ### Find a post by id, post exists
 ### Return Status 200
 @id = 9
-GET {{url}}{{id}} HTTP/1.1
+GET {{postsUrl}}{{id}} HTTP/1.1
+Content-Type: application/json
 Accept: application/json
+
+{
+    "userId": {{userId}},
+    "token": {{token}}
+}
 
 
 ### Find a post by id, post does not exist
 ### Return Status 204
 @idNonExistent = 10
-GET {{url}}{{idNonExistent}} HTTP/1.1
+GET {{postsUrl}}{{idNonExistent}} HTTP/1.1
+Content-Type: application/json
 Accept: application/json
+
+{
+    "userId": {{userId}},
+    "token": {{token}}
+}
 

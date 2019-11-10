@@ -4,6 +4,7 @@ import * as dotenv from "dotenv";
 import container from "./inversify.config";
 import { createConnectionDB } from "./Infrastructure/Database/Configuration";
 import Router from "./Infrastructure/Router/Router";
+import AuthenticationMiddleware from "./Infrastructure/Middlewares/AuthenticationMiddleware";
 import UserController from "./Infrastructure/Controllers/UserController";
 import AuthenticationController from "./Infrastructure/Controllers/AuthenticationController";
 import PostController from "./Infrastructure/Controllers/PostController";
@@ -21,6 +22,7 @@ class App {
         createConnectionDB();
         this.router = new Router(
             this.app,
+            container.get(AuthenticationMiddleware),
             container.get(AuthenticationController),
             container.get(UserController),
             container.get(PostController)
