@@ -23,32 +23,52 @@ Accept: application/json
 }
 
 
+### Variables required for subsequent requests
+@id = {{loginUser.response.headers.id}}
+@token = {{loginUser.response.headers.token}}
+
+
 ### Try to logout an User that is logged in, wrong session
 ### Return Status 200, but don't log out (see database)
-@userId = {{loginUser.response.body.$.session.userId}}
-@falseToken = "anytoken"
 POST {{logoutUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
+id: {{id}}
+token: NOT_VALID_TOKEN
 
-{
-    "userId": {{userId}},
-    "token": {{falseToken}}
-}
+
+### Try to logout an existing User, right session, wrong format for id
+### Return Status 400, don't logout
+POST {{logoutUrl}} HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+id: NOT_VALID_ID
+token: {{token}}
+
+
+### Try to logout an existing User, missing token
+### Return Status 400, don't logout
+POST {{logoutUrl}} HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+id: {{id}}
+
+
+### Try to logout an existing User, missing user id
+### Return Status 400, don't logout
+POST {{logoutUrl}} HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+token: {{token}}
 
 
 ### Logout an existing User, right session
 ### Return Status 200; logout if user is logged in
-@userId = {{loginUser.response.body.$.session.userId}}
-@token = "{{loginUser.response.body.$.session.token}}"
 POST {{logoutUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
-
-{
-    "userId": {{userId}},
-    "token": {{token}}
-}
+id: {{id}}
+token: {{token}}
 
 
 ### Request Token for a non-existing User

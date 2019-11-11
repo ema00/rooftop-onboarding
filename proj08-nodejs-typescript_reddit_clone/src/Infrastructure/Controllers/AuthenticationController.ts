@@ -4,6 +4,7 @@ import TYPES from "../../types";
 import AuthenticationService from "../../Application/Services/AuthenticationService";
 import Session from "../../Domain/Entities/Session";
 import User from "../../Domain/Entities/User";
+import { isArray, isNullOrUndefined } from "util";
 
 
 @injectable()
@@ -27,7 +28,9 @@ class AuthenticationController {
             if (user) {
                 const session = await this.authenticationService.login(user, password);
                 if (session) {
-                    res.status(200).json(session.toJson());
+                    res.status(200).
+                        header("id", String(session.userId)).
+                        header("token", session.token).json();
                 }
                 else {
                     res.status(400).json();
@@ -43,10 +46,15 @@ class AuthenticationController {
     }
 
     public logout = async (req: Request, res: Response) => {
-        const { userId, token } = req.body;
-        const session = new Session(userId, token);
+        const userId = Number(req.headers["id"]);
+        const token = req.headers["token"];
         
         try {
+            if (isNaN(userId) || isNullOrUndefined(token) || isArray(token)) {
+                res.status(400).json();
+                return;
+            }
+            const session = new Session(userId, token);
             const user = await User.findOne({ where: { id: userId } });
             if (user) {
                 this.authenticationService.logout(user, session);
