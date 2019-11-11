@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { injectable, inject } from "inversify";
+import { isArray, isNullOrUndefined } from "util";
 import TYPES from "../../types";
 import AuthenticationService from "../../Application/Services/AuthenticationService";
 import Session from "../../Domain/Entities/Session";
 import User from "../../Domain/Entities/User";
-import { isArray, isNullOrUndefined } from "util";
 
 
 @injectable()

@@ -17,9 +17,14 @@ class PostController {
 
     
 	public create = async (req: Request, res: Response) => {
-        const { userId, title, content } = req.body;
-
+        const { title, content } = req.body;
+        const userId = Number(req.headers["id"]);
+        
         try {
+            if (isNaN(userId)) {
+                res.status(400).json();
+                return;
+            }
             const post = await this.postService.create(userId, title, content);
             res.status(201).json(post.toJson());
         }

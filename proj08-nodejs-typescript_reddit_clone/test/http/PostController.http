@@ -32,9 +32,9 @@ Accept: application/json
 }
 
 
-### Token for querying the Posts endpoint
-@userId = {{loginUser.response.body.$.session.userId}}
-@token = "{{loginUser.response.body.$.session.token}}"
+### Token for querying the Posts endpoint in subsequent requests
+@uid = {{loginUser.response.headers.id}}
+@token = {{loginUser.response.headers.token}}
 
 
 ### Logout an existing User, right session
@@ -42,25 +42,22 @@ Accept: application/json
 POST {{logoutUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
-
-{
-    "userId": {{userId}},
-    "token": {{token}}
-}
+id: {{uid}}
+token: {{token}}
 
 
 ### Create Post
 ### Return Status 201
 # @name createPost
-@title = "Post number 11"
-@content = "Content of the 11th post..."
+@title = "Post number 12"
+@content = "Content of the 12th post..."
 POST {{postsUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
+id: {{uid}}
+token: {{token}}
 
 {
-    "userId": {{userId}},
-    "token": {{token}},
     "title": {{title}},
     "content": {{content}}
 }
@@ -68,13 +65,15 @@ Accept: application/json
 
 ### Search the Posts of a User by id
 ### Return Status 200
+@otherUserId = 40
 GET {{postsUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
+id: {{uid}}
+token: {{token}}
 
 {
-    "userId": {{userId}},
-    "token": {{token}}
+    "userId": {{otherUserId}}
 }
 
 
@@ -84,10 +83,10 @@ Accept: application/json
 GET {{postsUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
+id: {{uid}}
+token: {{token}}
 
 {
-    "userId": {{userId}},
-    "token": {{token}},
     "title": {{titleLike}}
 }
 
@@ -98,10 +97,10 @@ Accept: application/json
 GET {{postsUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
+id: {{uid}}
+token: {{token}}
 
 {
-    "userId": {{userId}},
-    "token": {{token}},
     "content": {{contentLike}}
 }
 
@@ -111,10 +110,10 @@ Accept: application/json
 GET {{postsUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
+id: {{uid}}
+token: {{token}}
 
 {
-    "userId": {{userId}},
-    "token": {{token}},
     "title": {{titleLike}},
     "content": {{contentLike}}
 }
@@ -125,12 +124,28 @@ Accept: application/json
 GET {{postsUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
+id: {{uid}}
+token: {{token}}
 
 {
-    "userId": {{userId}},
-    "token": {{token}},
+    "userId": {{uid}},
     "title": {{titleLike}},
     "content": {{contentLike}}
+}
+
+
+### Search the Posts by of another user by userId
+### Return Status 200
+GET {{postsUrl}} HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+id: {{uid}}
+token: {{token}}
+
+{
+    "userId": {{otherUserId}},
+    "page": 1,
+    "size": 2
 }
 
 
@@ -139,10 +154,11 @@ Accept: application/json
 GET {{postsUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
+id: {{uid}}
+token: {{token}}
 
 {
     "userId": -10,
-    "token": {{token}},
     "title": {{titleLike}},
     "content": {{contentLike}}
 }
@@ -154,10 +170,10 @@ Accept: application/json
 GET {{postsUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
+id: {{uid}}
+token: {{token}}
 
 {
-    "userId": {{userId}},
-    "token": {{token}},
     "title": {{NotExisting}}
 }
 
@@ -167,10 +183,10 @@ Accept: application/json
 GET {{postsUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
+id: {{uid}}
+token: {{token}}
 
 {
-    "userId": {{userId}},
-    "token": {{token}},
     "content": {{NotExisting}},
     "page": 0,
     "size": 10
@@ -182,10 +198,10 @@ Accept: application/json
 GET {{postsUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
+id: {{uid}}
+token: {{token}}
 
 {
-    "userId": {{userId}},
-    "token": {{token}}
 }
 
 
@@ -194,10 +210,10 @@ Accept: application/json
 GET {{postsUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
+id: {{uid}}
+token: {{token}}
 
 {
-    "userId": {{userId}},
-    "token": {{token}},
     "page": 0,
     "size": 10
 }
@@ -208,10 +224,10 @@ Accept: application/json
 GET {{postsUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
+id: {{uid}}
+token: {{token}}
 
 {
-    "userId": {{userId}},
-    "token": {{token}},
     "page": 1000000,
     "size": 50
 }
@@ -222,10 +238,10 @@ Accept: application/json
 GET {{postsUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
+id: {{uid}}
+token: {{token}}
 
 {
-    "userId": {{userId}},
-    "token": {{token}},
     "page": -10,
     "size": 20
 }
@@ -236,10 +252,10 @@ Accept: application/json
 GET {{postsUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
+id: {{uid}}
+token: {{token}}
 
 {
-    "userId": {{userId}},
-    "token": {{token}},
     "page": "NOT A NUMBER",
     "size": 50
 }
@@ -250,10 +266,10 @@ Accept: application/json
 GET {{postsUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
+id: {{uid}}
+token: {{token}}
 
 {
-    "userId": {{userId}},
-    "token": {{token}},
     "page": 0,
     "size": "NOT A NUMBER"
 }
@@ -263,24 +279,17 @@ Accept: application/json
 ### Return Status 200
 @id = 9
 GET {{postsUrl}}{{id}} HTTP/1.1
-Content-Type: application/json
 Accept: application/json
+id: {{uid}}
+token: {{token}}
 
-{
-    "userId": {{userId}},
-    "token": {{token}}
-}
 
 
 ### Find a post by id, post does not exist
 ### Return Status 204
 @idNonExistent = 10
 GET {{postsUrl}}{{idNonExistent}} HTTP/1.1
-Content-Type: application/json
 Accept: application/json
-
-{
-    "userId": {{userId}},
-    "token": {{token}}
-}
+id: {{uid}}
+token: {{token}}
 
