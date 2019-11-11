@@ -3,8 +3,9 @@ import User from "../../Domain/Entities/User";
 
 interface UserService {
 
-    create(name: string, dni: number, password: string, role: string, email: string)
-        : Promise<User>;
+    create(
+        name: string, dni: number, password: string, role: string, email: string
+    ): Promise<User>;
 
     findOne(id: number): Promise<User | undefined>;
 

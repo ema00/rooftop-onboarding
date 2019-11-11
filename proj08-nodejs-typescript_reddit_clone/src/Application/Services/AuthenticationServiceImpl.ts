@@ -17,8 +17,8 @@ class AuthenticationServiceImpl implements AuthenticationService {
 
     constructor(
         @inject(TYPES.TokenService) tokenService: TokenService,
-        @inject(TYPES.HashService) hashService: HashService) {
-        
+        @inject(TYPES.HashService) hashService: HashService
+    ) {
         this.tokenService = tokenService;
         this.hashService = hashService;
     }

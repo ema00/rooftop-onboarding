@@ -31,9 +31,8 @@ class PostServiceImpl implements PostService {
 	}
     
     public async count(
-		userId: number | undefined, title: string | undefined, content: string | undefined)
-		: Promise<number> {
-        
+		userId: number | undefined, title: string | undefined, content: string | undefined
+	): Promise<number> {
 		const predicate: any = { };
 		if (userId) { predicate.user = { id: userId }; }
 		if (title) { predicate.title = Like(`%${title}%`); }
@@ -44,9 +43,9 @@ class PostServiceImpl implements PostService {
 
 	public async find(
 		userId: number | undefined, title: string | undefined, content: string | undefined,
-		size: number | undefined, page: number | undefined): Promise<Post[]> {
-
-        if (!isUndefined(size) && !isNull(size) && !isNaN(size) &&
+		size: number | undefined, page: number | undefined
+	): Promise<Post[]> {
+		if (!isUndefined(size) && !isNull(size) && !isNaN(size) &&
             !isUndefined(page) && !isNull(page) && !isNaN(page)) {
             size = (0 < size && size <= this.MAX_PAGE_SIZE) ? size : this.MAX_PAGE_SIZE;
             page = (0 <= page) ? page : 0;

@@ -8,16 +8,16 @@ interface PostService {
     count(
         userId: number | undefined,
         title: string | undefined,
-        content: string | undefined)
-        : Promise<number>;
+        content: string | undefined
+    ): Promise<number>;
 
     find(
         userId: number | undefined,
         title: string | undefined,
         content: string | undefined,
         size: number | undefined,
-        page: number | undefined)
-        : Promise<Post[]>;
+        page: number | undefined
+    ): Promise<Post[]>;
 
     findOne(id: number): Promise<Post | undefined>;
     

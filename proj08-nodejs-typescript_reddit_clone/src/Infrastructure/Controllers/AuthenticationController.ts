@@ -14,8 +14,8 @@ class AuthenticationController {
 
 
     constructor(
-        @inject(TYPES.AuthenticationService) authenticationService: AuthenticationService) {
-        
+        @inject(TYPES.AuthenticationService) authenticationService: AuthenticationService
+    ) {    
         this.authenticationService = authenticationService;
     }
 

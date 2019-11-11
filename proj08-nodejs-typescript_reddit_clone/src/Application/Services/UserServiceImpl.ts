@@ -19,8 +19,8 @@ class UserServiceImpl implements UserService {
 
 
     public async create(
-        name: string, dni: number, password: string, role: string, email: string): Promise<User> {
-        
+        name: string, dni: number, password: string, role: string, email: string
+    ): Promise<User> {    
         if (!name) { throw new Error().message = "Name of User cannot be empty."; }
         if (!dni || isNaN(dni)) { throw new Error().message = "DNI not valid."; }
         if (!password) { throw new Error().message = "Password cannot be empty."; }
