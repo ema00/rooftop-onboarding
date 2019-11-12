@@ -71,7 +71,10 @@ class AuthenticationServiceImpl implements AuthenticationService {
             throw new Error().message = "Invalid session.";
         }
 
-        return !!(await Session.findOne({ where: { id: session.userId, token: session.token } }));
+        const sessions = await Session.find(
+            { where: { id: session.userId, token: session.token } });
+        // This is necessary because TypeOrm fails to the above query correctly
+        return sessions.length > 0 && session.equals(sessions[0]);
     }
 
 }
