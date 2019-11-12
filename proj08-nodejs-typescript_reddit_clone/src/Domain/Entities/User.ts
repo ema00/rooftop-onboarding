@@ -1,7 +1,7 @@
 import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { JoinTable, ManyToMany } from "typeorm";
-import UserRole from "./UserRole";
-import UserRoleType from "./UserRoleType";
+import UserRole from "../ValueObjects/UserRole";
+import UserRoleType from "../ValueObjects/UserRoleType";
 import Post from "./Post";
 
 

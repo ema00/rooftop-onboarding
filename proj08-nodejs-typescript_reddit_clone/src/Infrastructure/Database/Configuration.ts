@@ -1,6 +1,6 @@
 import { createConnection } from "typeorm";
 import User from "../../Domain/Entities/User";
-import UserRole from "../../Domain/Entities/UserRole";
+import UserRole from "../../Domain/ValueObjects/UserRole";
 import Post from "../../Domain/Entities/Post";
 import Session from  "../../Domain/Entities/Session";
 

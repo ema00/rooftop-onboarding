@@ -2,7 +2,7 @@ import { Request } from "express";
 import { check, validationResult } from "express-validator";
 import Validator from "./Validator";
 import ValidationError from "./ValidationError";
-import UserRoleType from "../../Domain/Entities/UserRoleType";
+import UserRoleType from "../../Domain/ValueObjects/UserRoleType";
 
 
 /* Validation constraints */

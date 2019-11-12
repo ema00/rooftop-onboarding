@@ -3,8 +3,8 @@ import TYPES from "../../types";
 import HashService from "../Services/HashService";
 import UserService from "./UserService";
 import User from "../../Domain/Entities/User";
-import UserRole from "../../Domain/Entities/UserRole";
-import UserRoleType from "../../Domain/Entities/UserRoleType";
+import UserRole from "../../Domain/ValueObjects/UserRole";
+import UserRoleType from "../../Domain/ValueObjects/UserRoleType";
 
 
 @injectable()
