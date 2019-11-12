@@ -1,9 +1,19 @@
 // Tests for the User Controller
 
-### Users endpoint
+### Domain URL
 @domain = http://localhost:3000/
+
+
+### Users endpoint
 @endpoint = users/
 @url = {{domain}}{{endpoint}}
+
+
+### Authentication endpoints
+@loginEndpoint = login/
+@logoutEndpoint = logout/
+@loginUrl = {{domain}}{{loginEndpoint}}
+@logoutUrl = {{domain}}{{logoutEndpoint}}
 
 
 ### Create User, default values for Role and email
@@ -14,30 +24,82 @@ Content-Type: application/json
 Accept: application/json
 
 {
-    "name": "jameson",
-    "dni": "25777777",
-    "password": "jameson999",
+    "name": "raikkonnen",
+    "dni": "25111111",
+    "password": "raikkonnen666",
     "role": "zeeper",
-    "email": "jameson@gmail.com"
+    "email": "raikkonnen@gmail.com"
 }
 
 
-### Read last created User
+### Request Token for an existing User, right password #############
 ### Return Status 200
-@userId = {{createUser.response.body.$.user.id}}
-GET {{url}}{{userId}} HTTP/1.1
-Accept: application/json
-
-
-### Update last created User
-### Return Status 200
-@userId = {{createUser.response.body.$.user.id}}
-PATCH {{url}}{{userId}} HTTP/1.1
+# @name loginUser
+@userName = "johnson"
+@userPassword = "benny999"
+POST {{loginUrl}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
 
 {
-    "id": {{userId}},
+    "name": {{userName}},
+    "password": {{userPassword}}
+}
+
+### Variables required for subsequent requests
+@id = {{loginUser.response.headers.id}}
+@token = {{loginUser.response.headers.token}}
+
+
+### Logout an existing User, right session
+### Return Status 200; logout if user is logged in
+POST {{logoutUrl}} HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+id: {{id}}
+token: {{token}}
+
+
+### Read last created User by a logged-in User, possible
+### Return Status 200
+@userId = {{createUser.response.body.$.user.id}}
+GET {{url}}{{userId}} HTTP/1.1
+Accept: application/json
+id: {{id}}
+token: {{token}}
+
+
+### Try to read last created User by a not logged-in User, not possible
+### Return Status 200
+GET {{url}}{{userId}} HTTP/1.1
+Accept: application/json
+id: {{userId}}
+token: {{token}}
+
+
+### Try to update last created User by another User, not possible
+### Return Status 400
+PATCH {{url}}{{userId}} HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+id: {{id}}
+token: {{token}}
+
+{
+    "dni": "25000111",
+    "email": "newjohnsonsmail@gmail.com"
+}
+
+
+### Update an existing User by self, user is logged-in
+### Return Status 200
+PATCH {{url}}{{id}} HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+id: {{id}}
+token: {{token}}
+
+{
     "dni": "25000111",
     "email": "newjohnsonsmail@gmail.com"
 }
@@ -56,11 +118,13 @@ Accept: application/json
 }
 
 
-### Read an existing User
+### Read an existing User by a user that is logged-in
 ### Return Status 200
-@id = 38
-GET {{url}}{{id}} HTTP/1.1
+@otherUserid = 40
+GET {{url}}{{otherUserid}} HTTP/1.1
 Accept: application/json
+id: {{id}}
+token: {{token}}
 
 
 ### Read a non-existent User
@@ -68,6 +132,8 @@ Accept: application/json
 @userIdNonExistent = -10
 GET {{url}}{{userIdNonExistent}} HTTP/1.1
 Accept: application/json
+id: {{id}}
+token: {{token}}
 
 
 ### Read a User, wrong parameters
@@ -75,4 +141,6 @@ Accept: application/json
 @userIdWrongValue = juan
 GET {{url}}{{userIdWrongValue}} HTTP/1.1
 Accept: application/json
+id: {{id}}
+token: {{token}}
 

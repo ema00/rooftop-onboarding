@@ -45,6 +45,7 @@ class Router {
 
     private setUserRoutes() {
         this.express.post("/users", this.userController.create);
+        this.express.use("/users/:id", this.authenticationMiddleware.redirectIfNotAuth);
         this.express.get("/users/:id", this.userController.read);
         this.express.patch("/users/:id", this.userController.update);
     }

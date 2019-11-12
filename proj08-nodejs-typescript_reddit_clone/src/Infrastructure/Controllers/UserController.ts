@@ -37,7 +37,7 @@ class UserController {
 
     public read = async (req: Request, res: Response) => {
         const id = Number(req.params.id);
-        if (isNaN(Number(id))) {
+        if (isNaN(id)) {
             res.status(400).json();
             return;
         }
@@ -57,7 +57,13 @@ class UserController {
     }
     
     public update = async (req: Request, res: Response) => {
-        const { id, dni, email } = req.body;
+        const id = Number(req.params.id);
+        const userId = Number(req.headers["id"]);
+        const { dni, email } = req.body;
+        if (isNaN(id) || !userId || id !== userId) {
+            res.status(400).json();
+            return;
+        }
 
         try {
             const user = await this.userService.update(id, dni, email);
