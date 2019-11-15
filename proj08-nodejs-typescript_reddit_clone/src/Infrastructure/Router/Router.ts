@@ -52,7 +52,8 @@ class Router {
             "/users", this.userValidatorMiddleware.validateCreate, this.userController.create);
         this.express.use("/users/:id", this.authenticationMiddleware.redirectIfNotAuth);
         this.express.get("/users/:id", this.userController.read);
-        this.express.patch("/users/:id", this.userController.update);
+        this.express.patch(
+            "/users/:id", this.userValidatorMiddleware.validateUpdate, this.userController.update);
     }
 
     private setLoginRoutes() {
