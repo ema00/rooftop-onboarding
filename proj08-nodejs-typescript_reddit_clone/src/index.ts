@@ -5,6 +5,7 @@ import container from "./inversify.config";
 import { createConnectionDB } from "./Infrastructure/Database/Configuration";
 import Router from "./Infrastructure/Router/Router";
 import AuthenticationMiddleware from "./Infrastructure/Middlewares/AuthenticationMiddleware";
+import UserValidatorMiddleware from "./Infrastructure/Middlewares/UserValidatorMiddleware";
 import UserController from "./Infrastructure/Controllers/UserController";
 import AuthenticationController from "./Infrastructure/Controllers/AuthenticationController";
 import PostController from "./Infrastructure/Controllers/PostController";
@@ -23,6 +24,7 @@ class App {
         this.router = new Router(
             this.app,
             container.get(AuthenticationMiddleware),
+            container.get(UserValidatorMiddleware),
             container.get(AuthenticationController),
             container.get(UserController),
             container.get(PostController)

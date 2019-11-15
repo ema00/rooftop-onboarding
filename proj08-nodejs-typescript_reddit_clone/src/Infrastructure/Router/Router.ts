@@ -2,6 +2,7 @@ import { Express } from "express";
 import { inject } from "inversify";
 import bodyParser = require("body-parser");
 import AuthenticationMiddleware from "../Middlewares/AuthenticationMiddleware";
+import UserValidatorMiddleware from "../Middlewares/UserValidatorMiddleware";
 import AuthenticationController from "../Controllers/AuthenticationController";
 import PostController from "../Controllers/PostController";
 import UserController from "../Controllers/UserController";
@@ -11,6 +12,7 @@ class Router {
 
     private express: Express;
     private authenticationMiddleware: AuthenticationMiddleware;
+    private userValidatorMiddleware: UserValidatorMiddleware;
     private authenticationController: AuthenticationController;
     private userController: UserController;
     private postController: PostController;
@@ -19,12 +21,14 @@ class Router {
     constructor(
         express: Express,
         @inject(AuthenticationMiddleware) authenticationMiddleware: AuthenticationMiddleware,
+        @inject(UserValidatorMiddleware) userValidatorMiddleware: UserValidatorMiddleware,
         @inject(AuthenticationController) authenticationController: AuthenticationController,
         @inject(UserController) userController: UserController,
         @inject(PostController) postController: PostController
     ) {
         this.express = express;
         this.authenticationMiddleware = authenticationMiddleware;
+        this.userValidatorMiddleware = userValidatorMiddleware;
         this.authenticationController = authenticationController;
         this.userController = userController;
         this.postController = postController;
@@ -44,7 +48,8 @@ class Router {
     }
 
     private setUserRoutes() {
-        this.express.post("/users", this.userController.create);
+        this.express.post(
+            "/users", this.userValidatorMiddleware.validateCreate, this.userController.create);
         this.express.use("/users/:id", this.authenticationMiddleware.redirectIfNotAuth);
         this.express.get("/users/:id", this.userController.read);
         this.express.patch("/users/:id", this.userController.update);

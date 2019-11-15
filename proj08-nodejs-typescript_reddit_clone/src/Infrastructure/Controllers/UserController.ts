@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { injectable, inject } from "inversify";
 import TYPES from "../../types";
-import ValidatorCreateUser from "../Validators/ValidatorCreateUser";
 import UserService from "../../Application/Services/UserService";
 
 
@@ -20,15 +19,8 @@ class UserController {
         const { name, dni, password, role, email } = req.body;
 
         try {
-            const validator = new ValidatorCreateUser(req);
-            const errors = await validator.validationResult();
-            if (errors.length == 0) {
-                const user = await this.userService.create(name, Number(dni), password, role, email);
-                res.status(201).json(user.toJson());
-            }
-            else {
-                res.status(400).json(errors);
-            }
+            const user = await this.userService.create(name, Number(dni), password, role, email);
+            res.status(201).json(user.toJson());
         }
         catch (error) {
             res.status(500).json(error);
