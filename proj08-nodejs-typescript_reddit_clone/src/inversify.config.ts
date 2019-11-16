@@ -3,6 +3,7 @@ import TYPES from "./types";
 
 import AuthenticationMiddleware from "./Infrastructure/Middlewares/AuthenticationMiddleware";
 import UserValidatorMiddleware from "./Infrastructure/Middlewares/UserValidatorMiddleware";
+import PostValidatorMiddleware from "./Infrastructure/Middlewares/PostValidatorMiddleware";
 
 import UserController from "./Infrastructure/Controllers/UserController";
 import AuthenticationController from "./Infrastructure/Controllers/AuthenticationController";
@@ -27,6 +28,7 @@ var container = new Container();
 // Middlewares
 container.bind<AuthenticationMiddleware>(AuthenticationMiddleware).toSelf();
 container.bind<UserValidatorMiddleware>(UserValidatorMiddleware).toSelf();
+container.bind<PostValidatorMiddleware>(PostValidatorMiddleware).toSelf();
 
 // Controllers
 container.bind<UserController>(UserController).toSelf();

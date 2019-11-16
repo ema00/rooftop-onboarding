@@ -6,6 +6,7 @@ import { createConnectionDB } from "./Infrastructure/Database/Configuration";
 import Router from "./Infrastructure/Router/Router";
 import AuthenticationMiddleware from "./Infrastructure/Middlewares/AuthenticationMiddleware";
 import UserValidatorMiddleware from "./Infrastructure/Middlewares/UserValidatorMiddleware";
+import PostValidatorMiddleware from "./Infrastructure/Middlewares/PostValidatorMiddleware";
 import UserController from "./Infrastructure/Controllers/UserController";
 import AuthenticationController from "./Infrastructure/Controllers/AuthenticationController";
 import PostController from "./Infrastructure/Controllers/PostController";
@@ -25,6 +26,7 @@ class App {
             this.app,
             container.get(AuthenticationMiddleware),
             container.get(UserValidatorMiddleware),
+            container.get(PostValidatorMiddleware),
             container.get(AuthenticationController),
             container.get(UserController),
             container.get(PostController)
@@ -40,7 +42,7 @@ class App {
     private startServer() {
         const port = 3000;
         this.app.listen(port, function() {
-            console.log("Server is run in port " + port);
+            console.log("Server is running in port " + port);
         });
     }
 
