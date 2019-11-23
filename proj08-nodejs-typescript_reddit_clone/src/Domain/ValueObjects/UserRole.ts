@@ -1,9 +1,9 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 import UserRoleType from "./UserRoleType";
 
 
 @Entity()
-class UserRole extends BaseEntity {
+class UserRole {
 
     @PrimaryGeneratedColumn()
     public readonly id: number;
@@ -13,7 +13,6 @@ class UserRole extends BaseEntity {
 
     
     constructor(type: UserRoleType) {
-        super();
         this.type = type;
     }
 

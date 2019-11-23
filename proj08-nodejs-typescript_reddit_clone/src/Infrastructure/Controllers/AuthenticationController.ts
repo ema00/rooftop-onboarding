@@ -3,6 +3,7 @@ import { injectable, inject } from "inversify";
 import { isArray, isNullOrUndefined } from "util";
 import TYPES from "../../types";
 import AuthenticationService from "../../Application/Services/AuthenticationService";
+import RepositoryFactory from "../../Domain/Repositories/RepositoryFactory";
 import Session from "../../Domain/Entities/Session";
 import User from "../../Domain/Entities/User";
 
@@ -10,12 +11,15 @@ import User from "../../Domain/Entities/User";
 @injectable()
 class AuthenticationController {
 
+    private repositoryFactory: RepositoryFactory;
     private authenticationService: AuthenticationService;
 
 
     constructor(
+        @inject(TYPES.RepositoryFactory) repositoryFactory: RepositoryFactory,
         @inject(TYPES.AuthenticationService) authenticationService: AuthenticationService
-    ) {    
+    ) {
+        this.repositoryFactory = repositoryFactory;
         this.authenticationService = authenticationService;
     }
 
@@ -24,7 +28,8 @@ class AuthenticationController {
         const { name, password } = req.body;
 
         try {
-            const user = await User.findOne({ where: { name: name } });
+            const userRepository = this.repositoryFactory.getUserRepository();
+            const user = await userRepository.findOne({ where: { name: name } });
             if (user) {
                 const session = await this.authenticationService.login(user, password);
                 if (session) {
@@ -54,8 +59,9 @@ class AuthenticationController {
                 res.status(400).json();
                 return;
             }
+            const userRepository = this.repositoryFactory.getUserRepository();
             const session = new Session(userId, token);
-            const user = await User.findOne({ where: { id: userId } });
+            const user = await userRepository.findOne({ where: { id: userId } });
             if (user) {
                 this.authenticationService.logout(user, session);
                 res.status(200).json();

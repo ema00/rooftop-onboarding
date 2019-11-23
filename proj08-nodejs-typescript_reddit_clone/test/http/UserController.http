@@ -70,7 +70,7 @@ token: {{token}}
 
 
 ### Try to read last created User by a not logged-in User, not possible
-### Return Status 200
+### Return Status 401
 GET {{url}}{{userId}} HTTP/1.1
 Accept: application/json
 id: {{userId}}
@@ -106,7 +106,7 @@ token: {{token}}
 
 
 ### try to Create User, fail with errors
-### Return Status 400
+### Return Status 422
 POST {{url}} HTTP/1.1
 Content-Type: application/json
 Accept: application/json
@@ -128,7 +128,7 @@ token: {{token}}
 
 
 ### Read a non-existent User
-### Return Status 200
+### Return Status 204
 @userIdNonExistent = -10
 GET {{url}}{{userIdNonExistent}} HTTP/1.1
 Accept: application/json
@@ -137,7 +137,7 @@ token: {{token}}
 
 
 ### Read a User, wrong parameters
-### Return Status 200
+### Return Status 400
 @userIdWrongValue = juan
 GET {{url}}{{userIdWrongValue}} HTTP/1.1
 Accept: application/json

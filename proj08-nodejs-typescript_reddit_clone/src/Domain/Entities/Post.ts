@@ -1,11 +1,11 @@
-import { Entity, BaseEntity } from "typeorm";
+import { Entity } from "typeorm";
 import { PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
 import { CreateDateColumn, UpdateDateColumn } from "typeorm";
 import User from "./User";
 
 
 @Entity()
-class Post extends BaseEntity {
+class Post {
 
     @PrimaryGeneratedColumn()
     public readonly id: number;
@@ -27,7 +27,6 @@ class Post extends BaseEntity {
 
 
     constructor(title: string, content: string, user: User) {
-        super();
         this.title = title;
         this.content = content;
         this.user = user;

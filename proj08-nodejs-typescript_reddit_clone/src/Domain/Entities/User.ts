@@ -1,12 +1,12 @@
-import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
-import { JoinTable, ManyToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { JoinTable, OneToMany, ManyToMany } from "typeorm";
 import UserRole from "../ValueObjects/UserRole";
 import UserRoleType from "../ValueObjects/UserRoleType";
 import Post from "./Post";
 
 
 @Entity()
-class User extends BaseEntity {
+class User {
 
     @PrimaryGeneratedColumn()
     public readonly id: number;

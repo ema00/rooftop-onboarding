@@ -1,19 +1,28 @@
 import { isUndefined, isNull } from "util";
+import { injectable, inject } from "inversify";
+import TYPES from "../../types";
 import { Like } from "typeorm";
-import { injectable } from "inversify";
 import PostService from "./PostService";
-import User from "../../Domain/Entities/User";
+import RepositoryFactory from "../../Domain/Repositories/RepositoryFactory";
 import Post from "../../Domain/Entities/Post";
 
 
 @injectable()
 class PostServiceImpl implements PostService {
 
-    private readonly MAX_PAGE_SIZE = 50;
+	private readonly MAX_PAGE_SIZE = 50;
+	
+	private readonly repositoryFactory: RepositoryFactory;
+
+
+	constructor(@inject(TYPES.RepositoryFactory) repositoryFactory: RepositoryFactory) {
+		this.repositoryFactory = repositoryFactory;
+	}
 
 
 	public async create(userId: number, title: string, content: string): Promise<Post> {
-        const user = await User.findOne(userId);
+		const userRepository = this.repositoryFactory.getUserRepository();
+        const user = await userRepository.findOne(userId);
 
         if (!user) { throw new Error().message = "Not valid User id."; }
 		if (!title) { throw new Error().message = "Post title cannot be empty."; }
@@ -22,12 +31,12 @@ class PostServiceImpl implements PostService {
 			throw new Error().message = "User has no privilege for creating a Post.";
 		}
 
-		const otherPostSameTitle = await Post.findOne({ where: { title: title } });
+		const postRepository = this.repositoryFactory.getPostRepository();
+		const otherPostSameTitle = await postRepository.findOne({ where: { title: title } });
 		if (otherPostSameTitle) { throw new Error().message = "Post title already exists"; }
 
 		const post = new Post(title, content, user);
-		await post.save();
-		return post;
+		return postRepository.save(post);
 	}
     
     public async count(
@@ -37,8 +46,9 @@ class PostServiceImpl implements PostService {
 		if (userId) { predicate.user = { id: userId }; }
 		if (title) { predicate.title = Like(`%${title}%`); }
         if (content) { predicate.content = Like(`%${content}%`); }
-        
-		return await Post.count({ where: predicate });
+		
+		const postRepository = this.repositoryFactory.getPostRepository();
+		return postRepository.count({ where: predicate });
 	}
 
 	public async find(
@@ -59,12 +69,14 @@ class PostServiceImpl implements PostService {
 		if (userId) { predicate.user = { id: userId }; }
 		if (title) { predicate.title = Like(`%${title}%`); }
         if (content) { predicate.content = Like(`%${content}%`); }
-        
-		return await Post.find({ where: predicate, take: size, skip: size * page });
+		
+		const postRepository = this.repositoryFactory.getPostRepository();
+		return postRepository.find({ where: predicate, take: size, skip: size * page });
 	}
 
 	public async findOne(id: number): Promise<Post | undefined> {
-        return await Post.findOne(id, { relations: ["user"] });
+		const postRepository = this.repositoryFactory.getPostRepository();
+        return postRepository.findOne(id, { relations: ["user"] });
     }
     
     public maxPageSize(): number {

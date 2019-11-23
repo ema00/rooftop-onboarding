@@ -1,8 +1,8 @@
-import { Entity, BaseEntity, PrimaryColumn, Column } from "typeorm";
+import { Entity, PrimaryColumn, Column } from "typeorm";
 
 
 @Entity()
-class Session extends BaseEntity {
+class Session {
 
     @PrimaryColumn()
     readonly userId: number;
@@ -12,7 +12,6 @@ class Session extends BaseEntity {
 
 
     public constructor(userId: number, token: string) {
-        super();
         this.userId = userId;
         this.token = token;
     }

@@ -18,6 +18,9 @@ import PostService from "./Application/Services/PostService";
 import HashServiceObjecthash from "./Infrastructure/Services/HashServiceObjecthash";
 import TokenServiceRandomjs from "./Infrastructure/Services/TokenServiceRandomjs";
 
+import RepositoryFactory from "./Domain/Repositories/RepositoryFactory";
+import RepositoryFactoryImpl from "./Infrastructure/Database/RepositoryFactoryImpl";
+
 import UserServiceImpl from "./Application/Services/UserServiceImpl";
 import AuthenticationServiceImpl from "./Application/Services/AuthenticationServiceImpl";
 import PostServiceImpl from "./Application/Services/PostServiceImpl";
@@ -41,5 +44,9 @@ container.bind<TokenService>(TYPES.TokenService).to(TokenServiceRandomjs);
 container.bind<UserService>(TYPES.UserService).to(UserServiceImpl);
 container.bind<AuthenticationService>(TYPES.AuthenticationService).to(AuthenticationServiceImpl);
 container.bind<PostService>(TYPES.PostService).to(PostServiceImpl);
+
+// Repository Factory
+container.bind<RepositoryFactory>(TYPES.RepositoryFactory).to(RepositoryFactoryImpl).inSingletonScope();
+
 
 export default container;

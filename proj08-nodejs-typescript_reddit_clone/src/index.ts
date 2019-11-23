@@ -2,7 +2,6 @@ import express, { Express } from "express";
 import "reflect-metadata";
 import * as dotenv from "dotenv";
 import container from "./inversify.config";
-import { createConnectionDB } from "./Infrastructure/Database/Configuration";
 import Router from "./Infrastructure/Router/Router";
 import AuthenticationMiddleware from "./Infrastructure/Middlewares/AuthenticationMiddleware";
 import UserValidatorMiddleware from "./Infrastructure/Middlewares/UserValidatorMiddleware";
@@ -21,7 +20,6 @@ class App {
     constructor() {
         dotenv.config();
         this.app = express();
-        createConnectionDB();
         this.router = new Router(
             this.app,
             container.get(AuthenticationMiddleware),
