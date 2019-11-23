@@ -2,13 +2,13 @@ import express, { Express } from "express";
 import "reflect-metadata";
 import * as dotenv from "dotenv";
 import container from "./inversify.config";
-import Router from "./Infrastructure/Router/Router";
-import AuthenticationMiddleware from "./Infrastructure/Middlewares/AuthenticationMiddleware";
-import UserValidatorMiddleware from "./Infrastructure/Middlewares/UserValidatorMiddleware";
-import PostValidatorMiddleware from "./Infrastructure/Middlewares/PostValidatorMiddleware";
-import UserController from "./Infrastructure/Controllers/UserController";
-import AuthenticationController from "./Infrastructure/Controllers/AuthenticationController";
-import PostController from "./Infrastructure/Controllers/PostController";
+import Router from "./Presentation/Router/Router";
+import AuthenticationMiddleware from "./Presentation/Middlewares/AuthenticationMiddleware";
+import UserValidatorMiddleware from "./Presentation/Middlewares/UserValidatorMiddleware";
+import PostValidatorMiddleware from "./Presentation/Middlewares/PostValidatorMiddleware";
+import UserController from "./Presentation/Controllers/UserController";
+import AuthenticationController from "./Presentation/Controllers/AuthenticationController";
+import PostController from "./Presentation/Controllers/PostController";
 
 
 class App {

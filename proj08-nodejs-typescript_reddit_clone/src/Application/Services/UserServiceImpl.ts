@@ -1,8 +1,8 @@
 import { injectable, inject } from "inversify";
 import TYPES from "../../types";
-import RepositoryFactory from "../../Infrastructure/Database/RepositoryFactoryImpl";
 import HashService from "../Services/HashService";
-import UserService from "./UserService";
+import UserService from "../Services/UserService";
+import RepositoryFactory from "../../Domain/Repositories/RepositoryFactory";
 import User from "../../Domain/Entities/User";
 import UserRole from "../../Domain/ValueObjects/UserRole";
 import UserRoleType from "../../Domain/ValueObjects/UserRoleType";

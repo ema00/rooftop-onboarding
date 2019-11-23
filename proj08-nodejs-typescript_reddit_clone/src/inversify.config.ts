@@ -1,29 +1,28 @@
 import { Container } from "inversify";
 import TYPES from "./types";
 
-import AuthenticationMiddleware from "./Infrastructure/Middlewares/AuthenticationMiddleware";
-import UserValidatorMiddleware from "./Infrastructure/Middlewares/UserValidatorMiddleware";
-import PostValidatorMiddleware from "./Infrastructure/Middlewares/PostValidatorMiddleware";
-
-import UserController from "./Infrastructure/Controllers/UserController";
-import AuthenticationController from "./Infrastructure/Controllers/AuthenticationController";
-import PostController from "./Infrastructure/Controllers/PostController";
-
 import HashService from "./Application/Services/HashService";
 import TokenService from "./Application/Services/TokenService";
 import UserService from "./Application/Services/UserService";
 import AuthenticationService from "./Application/Services/AuthenticationService";
 import PostService from "./Application/Services/PostService";
-
-import HashServiceObjecthash from "./Infrastructure/Services/HashServiceObjecthash";
-import TokenServiceRandomjs from "./Infrastructure/Services/TokenServiceRandomjs";
-
 import RepositoryFactory from "./Domain/Repositories/RepositoryFactory";
-import RepositoryFactoryImpl from "./Infrastructure/Database/RepositoryFactoryImpl";
 
 import UserServiceImpl from "./Application/Services/UserServiceImpl";
 import AuthenticationServiceImpl from "./Application/Services/AuthenticationServiceImpl";
 import PostServiceImpl from "./Application/Services/PostServiceImpl";
+
+import AuthenticationMiddleware from "./Presentation/Middlewares/AuthenticationMiddleware";
+import UserValidatorMiddleware from "./Presentation/Middlewares/UserValidatorMiddleware";
+import PostValidatorMiddleware from "./Presentation/Middlewares/PostValidatorMiddleware";
+
+import UserController from "./Presentation/Controllers/UserController";
+import AuthenticationController from "./Presentation/Controllers/AuthenticationController";
+import PostController from "./Presentation/Controllers/PostController";
+
+import HashServiceObjecthash from "./Infrastructure/Services/HashServiceObjecthash";
+import TokenServiceRandomjs from "./Infrastructure/Services/TokenServiceRandomjs";
+import RepositoryFactoryImpl from "./Infrastructure/Persistence/RepositoryFactoryImpl";
 
 
 var container = new Container();

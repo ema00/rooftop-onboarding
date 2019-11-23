@@ -1,6 +1,6 @@
+import { isArray, isNullOrUndefined } from "util";
 import { NextFunction, Request, Response } from "express";
 import { inject, injectable } from "inversify";
-import { isArray, isNullOrUndefined } from "util";
 import TYPES from "../../types";
 import AuthenticationService from "../../Application/Services/AuthenticationService";
 import Session from "../../Domain/Entities/Session";

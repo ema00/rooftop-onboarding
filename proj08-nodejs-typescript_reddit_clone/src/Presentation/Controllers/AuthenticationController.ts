@@ -5,7 +5,6 @@ import TYPES from "../../types";
 import AuthenticationService from "../../Application/Services/AuthenticationService";
 import RepositoryFactory from "../../Domain/Repositories/RepositoryFactory";
 import Session from "../../Domain/Entities/Session";
-import User from "../../Domain/Entities/User";
 
 
 @injectable()
