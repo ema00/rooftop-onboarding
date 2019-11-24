@@ -1,7 +1,7 @@
 import express, { Express } from "express";
 import "reflect-metadata";
 import * as dotenv from "dotenv";
-import container from "./inversify.config";
+import { container, asyncContainerModule, syncContainerModule } from "./inversify.config";
 import Router from "./Presentation/Router/Router";
 import AuthenticationMiddleware from "./Presentation/Middlewares/AuthenticationMiddleware";
 import UserValidatorMiddleware from "./Presentation/Middlewares/UserValidatorMiddleware";
@@ -20,21 +20,32 @@ class App {
     constructor() {
         dotenv.config();
         this.app = express();
-        this.router = new Router(
-            this.app,
-            container.get(AuthenticationMiddleware),
-            container.get(UserValidatorMiddleware),
-            container.get(PostValidatorMiddleware),
-            container.get(AuthenticationController),
-            container.get(UserController),
-            container.get(PostController)
-        );
     }
     
 
-    public run() {
-        this.startServer();
-        this.router.init();
+    public async run() {
+        try {
+            // This is necessary in order to set the DB connection before loading the bindings
+            // ORM Repositories are obtained from DB connection, so DB connection is first
+            await container.loadAsync(asyncContainerModule);
+            container.load(syncContainerModule);
+        }
+        catch (error) {
+            throw new Error().message = "Fail loading IoC container.";
+        }
+        finally {
+            this.router = new Router(
+                this.app,
+                container.get(AuthenticationMiddleware),
+                container.get(UserValidatorMiddleware),
+                container.get(PostValidatorMiddleware),
+                container.get(AuthenticationController),
+                container.get(UserController),
+                container.get(PostController)
+            );
+            this.startServer();
+            this.router.init();
+        }
     }
 
     private startServer() {

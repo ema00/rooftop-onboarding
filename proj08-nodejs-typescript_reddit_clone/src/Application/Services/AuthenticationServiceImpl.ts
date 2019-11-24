@@ -5,6 +5,7 @@ import AuthenticationService from "./AuthenticationService";
 import TokenService from "./TokenService";
 import HashService from "./HashService";
 import RepositoryFactory from "../../Domain/Repositories/RepositoryFactory";
+import SessionRepository from "../../Domain/Repositories/SessionRepository";
 import Session from "../../Domain/Entities/Session";
 import User from "../../Domain/Entities/User";
 
@@ -12,7 +13,7 @@ import User from "../../Domain/Entities/User";
 @injectable()
 class AuthenticationServiceImpl implements AuthenticationService {
 
-    private readonly repositoryFactory: RepositoryFactory;
+    private readonly sessionRepository: SessionRepository;
     private readonly tokenService: TokenService;
     private readonly hashService: HashService;
 
@@ -22,7 +23,7 @@ class AuthenticationServiceImpl implements AuthenticationService {
         @inject(TYPES.TokenService) tokenService: TokenService,
         @inject(TYPES.HashService) hashService: HashService
     ) {
-        this.repositoryFactory = repositoryFactory;
+        this.sessionRepository = repositoryFactory.getSessionRepository();
         this.tokenService = tokenService;
         this.hashService = hashService;
     }
@@ -36,12 +37,11 @@ class AuthenticationServiceImpl implements AuthenticationService {
             throw new Error().message = "Invalid password.";
         }
         
-        const sessionRepository = this.repositoryFactory.getSessionRepository();
         const pass = this.hashService.getStringHash(password);
         if (pass.valueOf() === user.pass.valueOf()) {
             const token = this.tokenService.getToken();
             const session = new Session(user.id, token);
-            return sessionRepository.save(session);
+            return this.sessionRepository.save(session);
         }
         else {
             return null;
@@ -56,10 +56,9 @@ class AuthenticationServiceImpl implements AuthenticationService {
             throw new Error().message = "Invalid session.";
         }
 
-        const sessionRepository = this.repositoryFactory.getSessionRepository();
         let storedSession: Session | undefined = await this.readSession(user);
         if (!isUndefined(storedSession) && session.equals(storedSession)) {
-            await sessionRepository.remove(session);
+            await this.sessionRepository.remove(session);
         }
     }
 
@@ -68,8 +67,7 @@ class AuthenticationServiceImpl implements AuthenticationService {
             throw new Error().message = "Invalid user.";
         }
 
-        const sessionRepository = this.repositoryFactory.getSessionRepository();
-        return sessionRepository.findOne({ userId: user.id });
+        return this.sessionRepository.findOne({ userId: user.id });
     }
 
     public async isLoggedIn(session: Session): Promise<boolean> {
@@ -77,8 +75,7 @@ class AuthenticationServiceImpl implements AuthenticationService {
             throw new Error().message = "Invalid session.";
         }
 
-        const sessionRepository = this.repositoryFactory.getSessionRepository();
-        const sessions = await sessionRepository.find(
+        const sessions = await this.sessionRepository.find(
             { where: { id: session.userId, token: session.token } });
         // This is necessary because TypeOrm fails to do the above query correctly
         return sessions.length > 0 && session.equals(sessions[0]);

@@ -1,4 +1,4 @@
-import { Container } from "inversify";
+import { Container, AsyncContainerModule, interfaces, ContainerModule } from "inversify";
 import TYPES from "./types";
 
 import HashService from "./Application/Services/HashService";
@@ -22,30 +22,50 @@ import PostController from "./Presentation/Controllers/PostController";
 
 import HashServiceObjecthash from "./Infrastructure/Services/HashServiceObjecthash";
 import TokenServiceRandomjs from "./Infrastructure/Services/TokenServiceRandomjs";
+
 import RepositoryFactoryImpl from "./Infrastructure/Persistence/RepositoryFactoryImpl";
+import RepositoryFactoryImpl2 from "./Infrastructure/Persistence/RepositoryFactoryImpl2";
+import ConnectionProvider from "./Infrastructure/Persistence/ConnectionProvider";
 
 
-var container = new Container();
-
-// Middlewares
-container.bind<AuthenticationMiddleware>(AuthenticationMiddleware).toSelf();
-container.bind<UserValidatorMiddleware>(UserValidatorMiddleware).toSelf();
-container.bind<PostValidatorMiddleware>(PostValidatorMiddleware).toSelf();
-
-// Controllers
-container.bind<UserController>(UserController).toSelf();
-container.bind<AuthenticationController>(AuthenticationController).toSelf();
-container.bind<PostController>(PostController).toSelf();
-
-// Services
-container.bind<HashService>(TYPES.HashService).to(HashServiceObjecthash);
-container.bind<TokenService>(TYPES.TokenService).to(TokenServiceRandomjs);
-container.bind<UserService>(TYPES.UserService).to(UserServiceImpl);
-container.bind<AuthenticationService>(TYPES.AuthenticationService).to(AuthenticationServiceImpl);
-container.bind<PostService>(TYPES.PostService).to(PostServiceImpl);
-
-// Repository Factory
-container.bind<RepositoryFactory>(TYPES.RepositoryFactory).to(RepositoryFactoryImpl).inSingletonScope();
+export const container = new Container();
 
 
-export default container;
+export let asyncContainerModule = new AsyncContainerModule(
+        async (bind: interfaces.Bind, unbind: interfaces.Unbind
+    ) => {
+
+    const connectionProvider = new ConnectionProvider();
+    await connectionProvider.connect();
+    bind<ConnectionProvider>(TYPES.ConnectionProvider).toConstantValue(connectionProvider);
+});
+
+
+export let syncContainerModule = new ContainerModule(
+    (
+        bind: interfaces.Bind,
+        unbind: interfaces.Unbind,
+        isBound: interfaces.IsBound,
+        rebind: interfaces.Rebind
+    ) => {
+    
+    // Middlewares
+    bind<AuthenticationMiddleware>(AuthenticationMiddleware).toSelf();
+    bind<UserValidatorMiddleware>(UserValidatorMiddleware).toSelf();
+    bind<PostValidatorMiddleware>(PostValidatorMiddleware).toSelf();
+
+    // Controllers
+    bind<UserController>(UserController).toSelf();
+    bind<AuthenticationController>(AuthenticationController).toSelf();
+    bind<PostController>(PostController).toSelf();
+
+    // Services
+    bind<HashService>(TYPES.HashService).to(HashServiceObjecthash);
+    bind<TokenService>(TYPES.TokenService).to(TokenServiceRandomjs);
+    bind<UserService>(TYPES.UserService).to(UserServiceImpl);
+    bind<AuthenticationService>(TYPES.AuthenticationService).to(AuthenticationServiceImpl);
+    bind<PostService>(TYPES.PostService).to(PostServiceImpl);
+
+    // Repository Factory
+    bind<RepositoryFactory>(TYPES.RepositoryFactory).to(RepositoryFactoryImpl2).inSingletonScope();
+});

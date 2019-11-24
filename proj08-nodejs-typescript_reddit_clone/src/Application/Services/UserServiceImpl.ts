@@ -3,6 +3,8 @@ import TYPES from "../../types";
 import HashService from "../Services/HashService";
 import UserService from "../Services/UserService";
 import RepositoryFactory from "../../Domain/Repositories/RepositoryFactory";
+import UserRepository from "../../Domain/Repositories/UserRepository";
+import UserRoleRepository from "../../Domain/Repositories/UserRoleRepository";
 import User from "../../Domain/Entities/User";
 import UserRole from "../../Domain/ValueObjects/UserRole";
 import UserRoleType from "../../Domain/ValueObjects/UserRoleType";
@@ -11,15 +13,17 @@ import UserRoleType from "../../Domain/ValueObjects/UserRoleType";
 @injectable()
 class UserServiceImpl implements UserService {
 
+    private readonly userRepository: UserRepository;
+    private readonly userRoleRepository: UserRoleRepository;
     private readonly hashService: HashService;
-    private readonly repositoryFactory: RepositoryFactory;
 
 
     constructor(
         @inject(TYPES.RepositoryFactory) repositoryFactory: RepositoryFactory,
         @inject(TYPES.HashService) hashService: HashService
     ) {
-        this.repositoryFactory = repositoryFactory;
+        this.userRepository = repositoryFactory.getUserRepository();
+        this.userRoleRepository = repositoryFactory.getUserRoleRepository();
         this.hashService = hashService;
     }
 
@@ -39,8 +43,7 @@ class UserServiceImpl implements UserService {
             throw new Error().message = "User role not valid.";
         }
 
-        const userRepository = this.repositoryFactory.getUserRepository();
-        const otherUserSameName = await userRepository.findOne({ where: { name: name } });
+        const otherUserSameName = await this.userRepository.findOne({ where: { name: name } });
 		if (otherUserSameName) { throw new Error().message = "User name already exists."; }
 
         const user: User = new User();
@@ -51,25 +54,23 @@ class UserServiceImpl implements UserService {
         const userRole = await this.roleFromRoleType(role);
         user.addRole(userRole);
 
-        return userRepository.save(user);
+        return this.userRepository.save(user);
     }
 
     public async findOne(id: number): Promise<User | undefined> {
         if (!id) { throw new Error().message = "User id not valid."; }
 
-        const userRepository = this.repositoryFactory.getUserRepository();
-        return userRepository.findOne({ where: { id: id } });
+        return this.userRepository.findOne({ where: { id: id } });
     }
 
     public async update(id: number, dni: number, email: string): Promise<User | undefined> {
         if (dni && isNaN(dni)) { throw new Error().message = "DNI not valid."; }
 
-        const userRepository = this.repositoryFactory.getUserRepository();
-        const user = await userRepository.findOne({ where: { id: id } });
+        const user = await this.userRepository.findOne({ where: { id: id } });
         if (user) {
             if (dni) { user.dni = dni; }
             if (email) { user.email = email; }
-            userRepository.save(user);
+            this.userRepository.save(user);
         }
 
         return user;
@@ -77,8 +78,7 @@ class UserServiceImpl implements UserService {
 
     // This one ensures User Roles exist in the database
     private async roleFromRoleType(role: string): Promise<UserRole> {
-        const userRoleRepository = this.repositoryFactory.getUserRoleRepository();
-        let userRole = await userRoleRepository.findOne({ where: { type: role } });
+        let userRole = await this.userRoleRepository.findOne({ where: { type: role } });
         if (!userRole) {
             switch (role) {
                 case UserRoleType.ADMIN:
