@@ -6,6 +6,13 @@ import Post from "../../Domain/Entities/Post";
 import Session from "../../Domain/Entities/Session";
 
 
+/** 
+ * Provides a DB connection.
+ * Usage:
+ * const connectionProvider = new ConnectionProvider();
+ * await connectionProvider.connect();
+ * const connection = connectionProvider.getConnection();
+*/
 @injectable()
 class ConnectionProvider {
 

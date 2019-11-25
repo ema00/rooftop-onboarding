@@ -2,7 +2,6 @@ import { injectable, inject } from "inversify";
 import TYPES from "../../types";
 import HashService from "../Services/HashService";
 import UserService from "../Services/UserService";
-import RepositoryFactory from "../../Domain/Repositories/RepositoryFactory";
 import UserRepository from "../../Domain/Repositories/UserRepository";
 import UserRoleRepository from "../../Domain/Repositories/UserRoleRepository";
 import User from "../../Domain/Entities/User";
@@ -19,11 +18,12 @@ class UserServiceImpl implements UserService {
 
 
     constructor(
-        @inject(TYPES.RepositoryFactory) repositoryFactory: RepositoryFactory,
+        @inject(TYPES.UserRepository) userRepository: UserRepository,
+        @inject(TYPES.UserRoleRepository) userRoleRepository: UserRoleRepository,
         @inject(TYPES.HashService) hashService: HashService
     ) {
-        this.userRepository = repositoryFactory.getUserRepository();
-        this.userRoleRepository = repositoryFactory.getUserRoleRepository();
+        this.userRepository = userRepository;
+        this.userRoleRepository = userRoleRepository;
         this.hashService = hashService;
     }
 
@@ -46,14 +46,13 @@ class UserServiceImpl implements UserService {
         const otherUserSameName = await this.userRepository.findOne({ where: { name: name } });
 		if (otherUserSameName) { throw new Error().message = "User name already exists."; }
 
-        const user: User = new User();
+        const user: User = this.userRepository.create();
         user.name = name;
         user.dni = dni;
         user.email = email;
         user.pass = this.hashService.getStringHash(password);
         const userRole = await this.roleFromRoleType(role);
         user.addRole(userRole);
-
         return this.userRepository.save(user);
     }
 
@@ -72,7 +71,6 @@ class UserServiceImpl implements UserService {
             if (email) { user.email = email; }
             this.userRepository.save(user);
         }
-
         return user;
     }
 

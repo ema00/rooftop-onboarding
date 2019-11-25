@@ -1,9 +1,8 @@
-import { isUndefined, isNull } from "util";
+import { isNullOrUndefined } from "util";
 import { injectable, inject } from "inversify";
 import TYPES from "../../types";
 import { Like } from "typeorm";
 import PostService from "./PostService";
-import RepositoryFactory from "../../Domain/Repositories/RepositoryFactory";
 import PostRepository from "../../Domain/Repositories/PostRepository";
 import UserRepository from "../../Domain/Repositories/UserRepository";
 import Post from "../../Domain/Entities/Post";
@@ -18,9 +17,12 @@ class PostServiceImpl implements PostService {
 	private readonly userRepository: UserRepository;
 
 
-	constructor(@inject(TYPES.RepositoryFactory) repositoryFactory: RepositoryFactory) {
-		this.postRepository = repositoryFactory.getPostRepository();
-		this.userRepository = repositoryFactory.getUserRepository();
+	constructor(
+		@inject(TYPES.PostRepository) postRepository: PostRepository,
+		@inject(TYPES.UserRepository) userRepository: UserRepository,
+	) {
+		this.postRepository = postRepository;
+		this.userRepository = userRepository;
 	}
 
 
@@ -56,8 +58,7 @@ class PostServiceImpl implements PostService {
 		userId: number | undefined, title: string | undefined, content: string | undefined,
 		size: number | undefined, page: number | undefined
 	): Promise<Post[]> {
-		if (!isUndefined(size) && !isNull(size) && !isNaN(size) &&
-            !isUndefined(page) && !isNull(page) && !isNaN(page)) {
+		if (!isNullOrUndefined(size) && !isNaN(size) && !isNullOrUndefined(page)&& !isNaN(page)) {
             size = (0 < size && size <= this.MAX_PAGE_SIZE) ? size : this.MAX_PAGE_SIZE;
             page = (0 <= page) ? page : 0;
 		}

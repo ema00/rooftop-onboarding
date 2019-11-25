@@ -134,7 +134,7 @@ token: {{token}}
 }
 
 
-### Search the Posts by of another user by userId
+### Search the Posts of another user by userId
 ### Return Status 200
 GET {{postsUrl}} HTTP/1.1
 Content-Type: application/json

@@ -1,10 +1,9 @@
-import { isUndefined, isNull } from "util";
+import { isUndefined, isNullOrUndefined } from "util";
 import { injectable, inject } from "inversify";
 import TYPES from "../../types";
 import AuthenticationService from "./AuthenticationService";
 import TokenService from "./TokenService";
 import HashService from "./HashService";
-import RepositoryFactory from "../../Domain/Repositories/RepositoryFactory";
 import SessionRepository from "../../Domain/Repositories/SessionRepository";
 import Session from "../../Domain/Entities/Session";
 import User from "../../Domain/Entities/User";
@@ -19,21 +18,21 @@ class AuthenticationServiceImpl implements AuthenticationService {
 
 
     constructor(
-        @inject(TYPES.RepositoryFactory) repositoryFactory: RepositoryFactory,
+        @inject(TYPES.SessionRepository) sessionRepository: SessionRepository,
         @inject(TYPES.TokenService) tokenService: TokenService,
         @inject(TYPES.HashService) hashService: HashService
     ) {
-        this.sessionRepository = repositoryFactory.getSessionRepository();
+        this.sessionRepository = sessionRepository;
         this.tokenService = tokenService;
         this.hashService = hashService;
     }
 
 
     public async login(user: User, password: string): Promise<Session | null> {
-        if (isUndefined(user) || isNull(user)) {
+        if (isNullOrUndefined(user)) {
             throw new Error().message = "Cannot generate token for invalid user.";
         }
-        if (isUndefined(password) || isNull(password)) {
+        if (isNullOrUndefined(password)) {
             throw new Error().message = "Invalid password.";
         }
         
@@ -49,10 +48,10 @@ class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     public async logout(user: User, session: Session): Promise<void> {
-        if (isUndefined(user) || isNull(user)) {
+        if (isNullOrUndefined(user)) {
             throw new Error().message = "Invalid user.";
         }
-        if (isUndefined(session) || isNull(session)) {
+        if (isNullOrUndefined(session)) {
             throw new Error().message = "Invalid session.";
         }
 
@@ -63,7 +62,7 @@ class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     public async readSession(user: User): Promise<Session | undefined> {
-        if (isUndefined(user) || isNull(user)) {
+        if (isNullOrUndefined(user)) {
             throw new Error().message = "Invalid user.";
         }
 
@@ -71,7 +70,7 @@ class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     public async isLoggedIn(session: Session): Promise<boolean> {
-        if (isUndefined(session) || isNull(session)) {
+        if (isNullOrUndefined(session)) {
             throw new Error().message = "Invalid session.";
         }
 

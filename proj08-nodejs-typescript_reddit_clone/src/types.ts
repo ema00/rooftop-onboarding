@@ -6,9 +6,10 @@ let TYPES = {
     UserService: Symbol("UserService"),
     AuthenticationService: Symbol("AuthenticationService"),
     PostService: Symbol("PostService"),
-    RepositoryFactory: Symbol("RepositoryFactory"),
-
-    ConnectionProvider: Symbol("ConnectionProvider"),
+    UserRepository: Symbol("UserRepository"),
+    UserRoleRepository: Symbol("UserRoleRepository"),
+    PostRepository: Symbol("PostRepository"),
+    SessionRepository: Symbol("SessionRepository"),
 };
 
 export default TYPES;
